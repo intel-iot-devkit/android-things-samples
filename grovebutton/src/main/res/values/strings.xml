@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GroveButton</string>
+
+    <string name="Button_Edison_Arduino">IO0</string>
+    <string name="Button_Edison_Sparkfun">GP20</string>
+
+    // TODO: Will need to change this string to reflect the updated pio_hal
+    <string name="Button_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+</resources>
