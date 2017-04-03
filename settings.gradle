@@ -15,3 +15,4 @@
  */
 
 include ':jhd1313m1'
+include ':mma7660'
