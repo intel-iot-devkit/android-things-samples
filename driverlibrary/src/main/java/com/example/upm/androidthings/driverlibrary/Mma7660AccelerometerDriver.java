@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.upm.androidthings.driversamples;
+package com.example.upm.androidthings.driverlibrary;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
