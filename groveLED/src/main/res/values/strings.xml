@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GroveLed</string>
+
+    // We use IO0 to determine that we are on the Arduino board.
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
+
+    // LED names
+    <string name="LED_Edison_Arduino">IO13</string>
+    <string name="LED_Edison_Sparkfun">GP12</string>
+    <string name="LED_Joule">LEDWIFI</string>
+</resources>
+
