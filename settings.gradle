@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+include ':groveLED'
+include ':grovebutton'
+include ':groveled'
+include ':groverelay'
+include ':grovetouch'
 include ':jhd1313m1'
 include ':mma7660'
-include ':groveLED'
