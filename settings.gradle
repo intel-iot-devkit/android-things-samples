@@ -16,7 +16,6 @@
 
 include ':accel_on_lcd'
 include ':driverlibrary'
-include ':groveLED'
 include ':grovebutton'
 include ':groveled'
 include ':groverelay'

@@ -44,5 +44,5 @@ android {
 
 dependencies {
     compile project(':driverlibrary')
-    provided 'com.google.android.things:androidthings:0.2-devpreview'
+    provided 'com.google.android.things:androidthings:0.3-devpreview'
 }

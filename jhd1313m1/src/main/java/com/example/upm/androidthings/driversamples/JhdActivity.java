@@ -20,6 +20,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.upm.androidthings.driverlibrary.BoardDefaults;
+import mraa.mraa;
+
 import java.io.IOException;
 
 /**
@@ -35,8 +38,7 @@ public class JhdActivity extends Activity {
         try {
             System.loadLibrary("javaupm_jhd1313m1");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native library failed to load.\n" + e);
+            Log.e(TAG, "Native library failed to load." + e);
             System.exit(1);
         }
     }
@@ -45,37 +47,59 @@ public class JhdActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Starting JhdActivity");
-        // Instantiate an jhd1313m1 instance on I2C bus 0
+
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
+        int i2cIndex = -1;
+
+        switch (bd.getBoardVariant()) {
+            case BoardDefaults.DEVICE_EDISON_ARDUINO:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
+                break;
+            case BoardDefaults.DEVICE_EDISON_SPARKFUN:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
+                break;
+            case BoardDefaults.DEVICE_JOULE_TUCHUCK:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
+                break;
+            default:
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
+        }
+
         try {
             upm_jhd1313m1.Jhd1313m1 lcd =
-                new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62);
+                new upm_jhd1313m1.Jhd1313m1(i2cIndex);
 
             lcd.clear();
             int ndx = 0;
             short[][] rgb = new short[][]{
-                {0xd1, 0x00, 0x00},
-                {0xff, 0x66, 0x22},
-                {0xff, 0xda, 0x21},
-                {0x33, 0xdd, 0x00},
-                {0x11, 0x33, 0xcc},
-                {0x22, 0x00, 0x66},
-                {0x33, 0x00, 0x44}
-            };
+                {0xd1, 0x00, 0x00},   // red
+                {0xff, 0x66, 0x22},   // orange
+                {0xff, 0xda, 0x21},   // yellow
+                {0x33, 0xdd, 0x00},   // green
+                {0x11, 0x33, 0xcc},   // blue
+                {0x22, 0x00, 0x66},   // violet
+                {0x33, 0x00, 0x44}};  // darker violet
             
-	    while (true) {
+            // move to a worker thread
+            while (true) {
                 // Alternate rows on the LCD
                 lcd.setCursor(ndx % 2, 0);
+
                 // Change the color
                 short r = rgb[ndx % 7][0];
                 short g = rgb[ndx % 7][1];
                 short b = rgb[ndx % 7][2];
                 lcd.setColor(r, g, b);
                 lcd.write("Hello World " + ndx);
+
                 // Echo via printf
-                System.out.println("Hello World" + ndx++);
-                System.out.format("rgb: 0x%02x%02x%02x\n", r, g, b);
+                Log.i(TAG, "Hello World" + ndx++);
+                Log.i(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
+
                 Thread.sleep(1000);
             }
+
+        // should not catch unqualifed exceptions and should also exit.
         } catch (Exception e) {
             Log.e(TAG, "Error in UPM APIs", e);
         }

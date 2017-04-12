@@ -26,6 +26,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.example.upm.androidthings.driverlibrary.Mma7660AccelerometerDriver;
+import com.example.upm.androidthings.driverlibrary.BoardDefaults;
+import mraa.mraa;
 
 import java.io.IOException;
 
@@ -44,6 +46,23 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Accelerometer demo created");
 
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
+        int i2cIndex = -1;
+
+        switch (bd.getBoardVariant()) {
+            case BoardDefaults.DEVICE_EDISON_ARDUINO:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
+                break;
+            case BoardDefaults.DEVICE_EDISON_SPARKFUN:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
+                break;
+            case BoardDefaults.DEVICE_JOULE_TUCHUCK:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
+                break;
+            default:
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
+        }
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerDynamicSensorCallback(new SensorManager.DynamicSensorCallback() {
             @Override
@@ -56,7 +75,7 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
             }
         });
         try {
-            mAccelerometerDriver = new Mma7660AccelerometerDriver(0);
+            mAccelerometerDriver = new Mma7660AccelerometerDriver(i2cIndex);
             mAccelerometerDriver.register();
             Log.i(TAG, "Accelerometer driver registered");
         } catch (IOException e) {

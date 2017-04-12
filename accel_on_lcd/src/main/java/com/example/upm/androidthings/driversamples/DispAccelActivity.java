@@ -26,6 +26,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.example.upm.androidthings.driverlibrary.Mma7660AccelerometerDriver;
+import com.example.upm.androidthings.driverlibrary.BoardDefaults;
+import mraa.mraa;
 
 import java.io.IOException;
 
@@ -37,14 +39,13 @@ import java.io.IOException;
   */
 
 public class DispAccelActivity extends Activity implements SensorEventListener {
-    private static final String TAG = "DispAccelActivity";
+    private static String TAG = "DispAccelActivity";
     static {
         try {
             System.loadLibrary("javaupm_mma7660");
             System.loadLibrary("javaupm_jhd1313m1");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native library failed to load.\n" + e);
+            Log.e(TAG, "Native library failed to load." + e);
             System.exit(1);
         }
     }
@@ -54,19 +55,36 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
     private upm_jhd1313m1.Jhd1313m1 lcd;
     private int ndx = 0;
     private short[][] rgb = new short[][]{
-                {0xd1, 0x00, 0x00},
-                {0xff, 0x66, 0x22},
-                {0xff, 0xda, 0x21},
-                {0x33, 0xdd, 0x00},
-                {0x11, 0x33, 0xcc},
-                {0x22, 0x00, 0x66},
-                {0x33, 0x00, 0x44}};
+                {0xd1, 0x00, 0x00},     // red
+                {0xff, 0x66, 0x22},     // orange
+                {0xff, 0xda, 0x21},     // yellow
+                {0x33, 0xdd, 0x00},     // green
+                {0x11, 0x33, 0xcc},     // blue
+                {0x22, 0x00, 0x66},     // violet
+                {0x33, 0x00, 0x44}};    // darker violet
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Starting DispAccelActivity");
-        
+
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
+        int i2cIndex = -1;
+
+        switch (bd.getBoardVariant()) {
+            case BoardDefaults.DEVICE_EDISON_ARDUINO:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
+                break;
+            case BoardDefaults.DEVICE_EDISON_SPARKFUN:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
+                break;
+            case BoardDefaults.DEVICE_JOULE_TUCHUCK:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
+                break;
+            default:
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
+        }
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerDynamicSensorCallback(new SensorManager.DynamicSensorCallback() {
             @Override
@@ -80,10 +98,10 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
         });
 
         try {
-            mAccelerometerDriver = new Mma7660AccelerometerDriver(0);
+            mAccelerometerDriver = new Mma7660AccelerometerDriver(i2cIndex);
             mAccelerometerDriver.register();
             Log.i(TAG, "Accelerometer driver registered");
-            lcd = new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62);
+            lcd = new upm_jhd1313m1.Jhd1313m1(i2cIndex);
             lcd.clear();
             Log.i(TAG, "Display initialized");
         } catch (IOException e) {
@@ -115,21 +133,26 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         Log.i(TAG, "Accelerometer event: " +
                 event.values[0] + ", " + event.values[1] + ", " + event.values[2]);
+
         try {
             // Display text and read count in first row
             lcd.setCursor(0, 0);
+
             // Change the color
             short r = rgb[ndx % 7][0];
             short g = rgb[ndx % 7][1];
             short b = rgb[ndx % 7][2];
             lcd.setColor(r, g, b);
-            lcd.write("Accel(x,y,z) " + ndx++);
+            lcd.write("Accel(x,y,z) " + ndx++%1000);
+
             // Display coordinates in second row
             lcd.setCursor(1, 0);
             lcd.write(String.format("%.2f ", event.values[0]) +
                        String.format("%.2f ", event.values[1]) +
                         String.format("%.2f ", event.values[2]));
             Thread.sleep(1000);
+
+        // shouldn't catch an unqualified exception. Should exit in any case.
         } catch (Exception e) {
             Log.e(TAG, "Error in Callback", e);
         }
