@@ -14,23 +14,18 @@ public class GroveRelay extends Activity {
         try {
             System.loadLibrary("javaupm_grove");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native code library failed to load.\n" +  e);
+            Log.e(TAG, "Native code library failed to load." +  e);
             System.exit(1);
         }
     }
-
-    private BoardDefaults bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_relay);
 
-        bd = new BoardDefaults(this.getApplicationContext());
-
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int gpioIndex = -1;
-        System.out.println("in App's onCreate");
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
@@ -41,28 +36,30 @@ public class GroveRelay extends Activity {
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
                 gpioIndex = mraa.getGpioLookup(getString(R.string.RELAY_Joule_Tuchuck));
-                System.out.println("gpioIndex"+gpioIndex);
                 break;
             default:
-                throw new IllegalStateException("Unknown Build.DEVICE ");
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
+
 
         try {
             upm_grove.GroveRelay relay = new upm_grove.GroveRelay(gpioIndex);
 
+            // This should be in a worker thread.
             for (int i = 0; i < 6; i++) {
                 relay.on();
                 if (relay.isOn())
-                    System.out.println("Relay is on");
+                    Log.i(TAG, "Relay is on");
                 Thread.sleep(1000);
 
                 relay.off();
                 if (relay.isOff())
-                    System.out.println("Relay is off");
+                    Log.i(TAG, "Relay is off");
                 Thread.sleep(1000);
             }
 
-        }catch (Exception e) {
+        // Shouldn't catch a universal exception and should exit in any case.
+        } catch (Exception e) {
             Log.e(TAG, "Error in UPM APIs", e);
         }
     }

@@ -32,5 +32,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'io.mraa.at.upm:upm_grove:1.1.0'
-
 }

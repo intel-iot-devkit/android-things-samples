@@ -30,16 +30,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class Mma7660AccelerometerDriver implements AutoCloseable {
-    private static final String TAG = Mma7660AccelerometerDriver.class.getSimpleName();
-    private static final String DRIVER_NAME = "GroveAccelerometer";
-    private static final String DRIVER_VENDOR = "Seeed";
-    private static final float DRIVER_MAX_RANGE = 1.5f * SensorManager.GRAVITY_EARTH;
-    private static final float DRIVER_RESOLUTION = DRIVER_MAX_RANGE / 32.f; // 6bit signed
-    private static final float DRIVER_POWER =  294.f / 1000.f;
-    private static final int DRIVER_MIN_DELAY_US = Math.round(1000000.f/120.f);
-    private static final int DRIVER_MAX_DELAY_US = Math.round(1000000.f/1.f);
-    private static final int DRIVER_VERSION = 1;
-    private static final String DRIVER_REQUIRED_PERMISSION = "";
+    private static String TAG = Mma7660AccelerometerDriver.class.getSimpleName();
+    private static String DRIVER_NAME = "GroveAccelerometer";
+    private static String DRIVER_VENDOR = "Seeed";
+    private static float DRIVER_MAX_RANGE = 1.5f * SensorManager.GRAVITY_EARTH;
+    private static float DRIVER_RESOLUTION = DRIVER_MAX_RANGE / 32.f; // 6bit signed
+    private static float DRIVER_POWER =  294.f / 1000.f;
+    private static int DRIVER_MIN_DELAY_US = Math.round(1000000.f/120.f);
+    private static int DRIVER_MAX_DELAY_US = Math.round(1000000.f/1.f);
+    private static int DRIVER_VERSION = 1;
+    private static String DRIVER_REQUIRED_PERMISSION = "";
     private MMA7660 mDevice;
     private UserSensor mUserSensor;
 

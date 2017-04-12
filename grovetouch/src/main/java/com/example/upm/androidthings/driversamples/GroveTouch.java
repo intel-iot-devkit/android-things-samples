@@ -14,23 +14,18 @@ public class GroveTouch extends Activity {
         try {
             System.loadLibrary("javaupm_ttp223");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native code library failed to load.\n" +  e);
+            Log.e(TAG, "Native code library failed to load." +  e);
             System.exit(1);
         }
     }
-
-    private BoardDefaults bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_touch);
 
-        bd = new BoardDefaults(this.getApplicationContext());
-
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int gpioIndex = -1;
-        System.out.println("in App's onCreate");
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
@@ -41,25 +36,27 @@ public class GroveTouch extends Activity {
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
                 gpioIndex = mraa.getGpioLookup(getString(R.string.TOUCH_Joule_Tuchuck));
-                System.out.println("gpioIndex"+gpioIndex);
                 break;
             default:
-                throw new IllegalStateException("Unknown Build.DEVICE ");
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
 
         try {
             upm_ttp223.TTP223 touch = new upm_ttp223.TTP223(gpioIndex);
 
+            // This should be in a worker thread.
+
             while (true) {
                 if (touch.isPressed())
-                    System.out.println(touch.name() + " is pressed");
+                    Log.i(TAG, touch.name() + " is pressed");
                 else
-                    System.out.println(touch.name() + " is not pressed");
+                    Log.i(TAG, touch.name() + " is not pressed");
 
                 Thread.sleep(1000);
             }
 
-        }catch (Exception e) {
+        // Shouldn't catch a universal exception and should exit in any case.
+        } catch (Exception e) {
             Log.e(TAG, "Error in UPM APIs", e);
         }
     }

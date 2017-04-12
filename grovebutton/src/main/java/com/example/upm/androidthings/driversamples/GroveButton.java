@@ -9,27 +9,24 @@ import mraa.mraa;
 
 public class GroveButton extends Activity {
     private static final String TAG = "GroveButtonActivity";
+
     static {
         try {
             System.loadLibrary("javaupm_grove");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native code library failed to load.\n" +  e);
+            Log.e(TAG, "Native code library failed to load." +  e);
             System.exit(1);
         }
     }
 
-    private BoardDefaults bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_button);
 
-        bd = new BoardDefaults(this.getApplicationContext());
-
         int gpioIndex = -1;
-        System.out.println("in App's onCreate");
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
@@ -40,20 +37,23 @@ public class GroveButton extends Activity {
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
                 gpioIndex = mraa.getGpioLookup(getString(R.string.BUTTON_Joule_Tuchuck));
-                System.out.println("gpioIndex"+gpioIndex);
                 break;
             default:
-                throw new IllegalStateException("Unknown Build.DEVICE ");
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
 
-        upm_grove.GroveButton button = new upm_grove.GroveButton(gpioIndex);
         try {
+            upm_grove.GroveButton button = new upm_grove.GroveButton(gpioIndex);
+
+            // This needs to be moved to a separate thread.
             while (true) {
-                System.out.println(button.name() + " value is " + button.value());
+                Log.i(TAG, button.name() + " value is " + button.value());
                 Thread.sleep(1000);
             }
-        }
-        catch(Exception e) {
+
+        // You shouldn't catch unclassified exceptions.
+        // You probably should exit should an exception be caught.
+        } catch(Exception e) {
             Log.e(TAG, "Error in UPM API", e);
         }
     }

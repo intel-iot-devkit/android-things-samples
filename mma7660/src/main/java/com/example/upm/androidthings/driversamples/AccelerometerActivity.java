@@ -56,7 +56,7 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
             }
         });
         try {
-            mAccelerometerDriver = new Mma7660AccelerometerDriver(0);
+            mAccelerometerDriver = new Mma7660AccelerometerDriver(0);    // Use the index lookup function for the bus
             mAccelerometerDriver.register();
             Log.i(TAG, "Accelerometer driver registered");
         } catch (IOException e) {

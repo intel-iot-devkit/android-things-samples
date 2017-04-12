@@ -3,8 +3,8 @@
 
     <string name="GPIO_Edison_Arduino">IO0</string>
 
-    <string name="LED_Edison_Arduino">IO0</string>
-    <string name="LED_Edison_Sparkfun">GP20</string>
-    <string name="LED_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="LED_Edison_Arduino">IO13</string>
+    <string name="LED_Edison_Sparkfun">GP12</string>
+    <string name="LED_Joule_Tuchuck">LEDWIFI</string>
 
 </resources>

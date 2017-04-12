@@ -35,8 +35,7 @@ public class JhdActivity extends Activity {
         try {
             System.loadLibrary("javaupm_jhd1313m1");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println(
-                    "Native library failed to load.\n" + e);
+            LOG.e(TAG, "Native library failed to load." + e);
             System.exit(1);
         }
     }
@@ -48,12 +47,14 @@ public class JhdActivity extends Activity {
         // Instantiate an jhd1313m1 instance on I2C bus 0
         try {
             upm_jhd1313m1.Jhd1313m1 lcd =
-                new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62);
+                new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62);   // Don't use constants.
+                                                              // please the data in a resource
+                                                              // use the bus lookup function for the index
 
             lcd.clear();
             int ndx = 0;
             short[][] rgb = new short[][]{
-                {0xd1, 0x00, 0x00},
+                {0xd1, 0x00, 0x00},   // fill in color names
                 {0xff, 0x66, 0x22},
                 {0xff, 0xda, 0x21},
                 {0x33, 0xdd, 0x00},
@@ -62,20 +63,26 @@ public class JhdActivity extends Activity {
                 {0x33, 0x00, 0x44}
             };
             
-	    while (true) {
+            // move to a worker thread
+            while (true) {
                 // Alternate rows on the LCD
                 lcd.setCursor(ndx % 2, 0);
+
                 // Change the color
                 short r = rgb[ndx % 7][0];
                 short g = rgb[ndx % 7][1];
                 short b = rgb[ndx % 7][2];
                 lcd.setColor(r, g, b);
                 lcd.write("Hello World " + ndx);
+
                 // Echo via printf
-                System.out.println("Hello World" + ndx++);
-                System.out.format("rgb: 0x%02x%02x%02x\n", r, g, b);
+                Log.i(TAG, "Hello World" + ndx++);
+                Log.i(TAG, "rgb: 0x%02x%02x%02x\n", r, g, b);
+
                 Thread.sleep(1000);
             }
+
+        // should not catch unqualifed exceptions and should also exit.
         } catch (Exception e) {
             Log.e(TAG, "Error in UPM APIs", e);
         }

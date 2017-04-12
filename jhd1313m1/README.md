@@ -1,17 +1,20 @@
 Jhd1313m1 LCD sample for Android Things using UPM
 
-Build and install
+Build and install using Android Studio:
+  click on the "Run" button.
 
-On Android Studio, click on the "Run" button.
+If you prefer to run on the command line, from this repository's root directory, type:
+  ./gradlew jhd1313m1:installDebug
 
-If you prefer to run on the command line, from this repository's root directory, type
+To start the activity (if not started by Android Studio):
+  adb shell am start com.example.upm.androidthings.driversamples/.Jhd1313m1Activity
 
-./gradlew jhd1313m1:installDebug
-adb shell am start com.example.upm.androidthings.driversamples/.Jhd1313m1Activity
+Be sure that you have the Grove Jhd1313m1 temperature sensor connected to your I2C bus.
 If you have everything set up correctly, the current temperature will be logged to logcat.
 
-License
 
+License
+-------
 Copyright (c) 2017 Intel Corporation.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
