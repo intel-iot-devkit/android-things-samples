@@ -30,7 +30,7 @@ allprojects {
     repositories {
         // Uncomment this to use the test-version of UPM and MRAA
         maven {
-            url "http://dl.bintray.com/android-ia/UPM-Test"
+            url "http://dl.bintray.com/androidthings-otc/android-things"
         }
         jcenter()
     }

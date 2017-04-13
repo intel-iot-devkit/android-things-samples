@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
+        applicationId "com.example.upm.androidthings.driversamples"
         minSdkVersion 24
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -42,8 +43,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'io.mraa.at.upm:upm_mma7660:1.1.0'
-    compile 'io.mraa.at.upm:upm_lsm303:1.1.0'
+    compile project(':driverlibrary')
     provided 'com.google.android.things:androidthings:0.3-devpreview'
 }
