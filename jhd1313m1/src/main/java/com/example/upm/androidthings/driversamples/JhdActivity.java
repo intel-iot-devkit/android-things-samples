@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import mraa.mraa;
+
 import java.io.IOException;
 
 /**
@@ -35,7 +37,7 @@ public class JhdActivity extends Activity {
         try {
             System.loadLibrary("javaupm_jhd1313m1");
         } catch (UnsatisfiedLinkError e) {
-            LOG.e(TAG, "Native library failed to load." + e);
+            Log.e(TAG, "Native library failed to load." + e);
             System.exit(1);
         }
     }
@@ -44,24 +46,38 @@ public class JhdActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Starting JhdActivity");
-        // Instantiate an jhd1313m1 instance on I2C bus 0
+
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
+        int i2cIndex = -1;
+
+        switch (bd.getBoardVariant()) {
+            case BoardDefaults.DEVICE_EDISON_ARDUINO:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Arduino));
+                break;
+            case BoardDefaults.DEVICE_EDISON_SPARKFUN:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Sparkfun));
+                break;
+            case BoardDefaults.DEVICE_JOULE_TUCHUCK:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Joule_Tuchuck));
+                break;
+            default:
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
+        }
+
         try {
             upm_jhd1313m1.Jhd1313m1 lcd =
-                new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62);   // Don't use constants.
-                                                              // please the data in a resource
-                                                              // use the bus lookup function for the index
+                new upm_jhd1313m1.Jhd1313m1(i2cIndex);
 
             lcd.clear();
             int ndx = 0;
             short[][] rgb = new short[][]{
-                {0xd1, 0x00, 0x00},   // fill in color names
-                {0xff, 0x66, 0x22},
-                {0xff, 0xda, 0x21},
-                {0x33, 0xdd, 0x00},
-                {0x11, 0x33, 0xcc},
-                {0x22, 0x00, 0x66},
-                {0x33, 0x00, 0x44}
-            };
+                {0xd1, 0x00, 0x00},   // red
+                {0xff, 0x66, 0x22},   // orange
+                {0xff, 0xda, 0x21},   // yellow
+                {0x33, 0xdd, 0x00},   // green
+                {0x11, 0x33, 0xcc},   // blue
+                {0x22, 0x00, 0x66},   // violet
+                {0x33, 0x00, 0x44}};  // darker violet
             
             // move to a worker thread
             while (true) {
@@ -77,7 +93,7 @@ public class JhdActivity extends Activity {
 
                 // Echo via printf
                 Log.i(TAG, "Hello World" + ndx++);
-                Log.i(TAG, "rgb: 0x%02x%02x%02x\n", r, g, b);
+                Log.i(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
 
                 Thread.sleep(1000);
             }

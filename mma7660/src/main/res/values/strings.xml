@@ -17,4 +17,8 @@
 
 <resources>
     <string name="app_name">Accelerometer Mma7660</string>
+    <string name="GPIO_Edison_Arduino">IO0</string>
+    <string name="ACCEL_Edison_Arduino">I2C6</string>
+    <string name="ACCEL_Edison_Sparkfun">I2C1</string>
+    <string name="ACCEL_Joule_Tuchuck">I2C0</string>
 </resources>
