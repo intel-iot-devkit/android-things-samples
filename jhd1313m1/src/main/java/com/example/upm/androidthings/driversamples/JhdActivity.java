@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.upm.androidthings.driverlibrary.BoardDefaults;
 import mraa.mraa;
 
 import java.io.IOException;
@@ -52,13 +53,13 @@ public class JhdActivity extends Activity {
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Arduino));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
                 break;
             case BoardDefaults.DEVICE_EDISON_SPARKFUN:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Sparkfun));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Joule_Tuchuck));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
                 break;
             default:
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());

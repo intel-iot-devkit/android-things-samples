@@ -1,4 +1,20 @@
-package com.example.upm.androidthings.driversamples;
+/*
+ * Copyright (c) 2017 Intel Corporation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.example.upm.androidthings.driverlibrary;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,16 +23,16 @@ import mraa.mraa;
 
 public class BoardDefaults {
     // returned by Build.device (does not differentiate the carrier boards)
-    static final String DEVICE_EDISON = "edison";
-    static final String DEVICE_JOULE = "joule";
+    public static final String DEVICE_EDISON = "edison";
+    public static final String DEVICE_JOULE = "joule";
 
     // determined by this module (includes the carrier board information)
     // note: edison_sparkfun and edison_miniboard use the same busses and gpios
     //       so we don't distinguish between them.
-    static final String DEVICE_EDISON_ARDUINO = "edison_arduino";
-    static final String DEVICE_EDISON_SPARKFUN = "edison_sparkfun";
-    static final String DEVICE_JOULE_TUCHUCK = "joule_tuchuck";
-    static final String DEVICE_NOT_KNOWN = "UNKNOWN";
+    public static final String DEVICE_EDISON_ARDUINO = "edison_arduino";
+    public static final String DEVICE_EDISON_SPARKFUN = "edison_sparkfun";
+    public static final String DEVICE_JOULE_TUCHUCK = "joule_tuchuck";
+    public static final String DEVICE_NOT_KNOWN = "UNKNOWN";
 
     private Context context;
     private Resources res;
@@ -31,7 +47,7 @@ public class BoardDefaults {
         if (!sBoardVariant.isEmpty()) {
             return sBoardVariant;
         }
-        
+
         // We start with the most generic device description and try to narrow it down.
         sBoardVariant = Build.DEVICE;
 
