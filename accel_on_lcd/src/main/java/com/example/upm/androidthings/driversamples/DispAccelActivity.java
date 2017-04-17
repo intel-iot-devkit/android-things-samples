@@ -26,6 +26,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.example.upm.androidthings.driverlibrary.Mma7660AccelerometerDriver;
+import mraa.mraa;
 
 import java.io.IOException;
 
@@ -65,7 +66,24 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Starting DispAccelActivity");
-        
+
+        BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
+        int i2cIndex = -1;
+
+        switch (bd.getBoardVariant()) {
+            case BoardDefaults.DEVICE_EDISON_ARDUINO:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Arduino));
+                break;
+            case BoardDefaults.DEVICE_EDISON_SPARKFUN:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Edison_Sparkfun));
+                break;
+            case BoardDefaults.DEVICE_JOULE_TUCHUCK:
+                i2cIndex = mraa.getI2cLookup(getString(R.string.ACCEL_Joule_Tuchuck));
+                break;
+            default:
+                throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
+        }
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerDynamicSensorCallback(new SensorManager.DynamicSensorCallback() {
             @Override
@@ -79,12 +97,10 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
         });
 
         try {
-            mAccelerometerDriver = new Mma7660AccelerometerDriver(0);  // Should use the lookup function for bus index
+            mAccelerometerDriver = new Mma7660AccelerometerDriver(i2cIndex);
             mAccelerometerDriver.register();
             Log.i(TAG, "Accelerometer driver registered");
-            lcd = new upm_jhd1313m1.Jhd1313m1(0, 0x3E, 0x62); // Don't use constants... put this in a resource
-                                                              // also... the bus should come from a lookup of 
-                                                              // using the new i2c lookup routine
+            lcd = new upm_jhd1313m1.Jhd1313m1(i2cIndex);
             lcd.clear();
             Log.i(TAG, "Display initialized");
         } catch (IOException e) {
@@ -126,7 +142,7 @@ public class DispAccelActivity extends Activity implements SensorEventListener {
             short g = rgb[ndx % 7][1];
             short b = rgb[ndx % 7][2];
             lcd.setColor(r, g, b);
-            lcd.write("Accel(x,y,z) " + ndx++);
+            lcd.write("Accel(x,y,z) " + ndx++%1000);
 
             // Display coordinates in second row
             lcd.setCursor(1, 0);
