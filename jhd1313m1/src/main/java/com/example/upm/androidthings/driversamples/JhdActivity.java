@@ -23,8 +23,6 @@ import android.util.Log;
 import com.example.upm.androidthings.driverlibrary.BoardDefaults;
 import mraa.mraa;
 
-import java.io.IOException;
-
 /**
   * Example of using Grove Jhd1313m1 LCD.
   *
@@ -53,21 +51,20 @@ public class JhdActivity extends Activity {
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Lcd_Edison_Arduino));
                 break;
             case BoardDefaults.DEVICE_EDISON_SPARKFUN:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Lcd_Edison_Sparkfun));
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Lcd_Joule_Tuchuck));
                 break;
             default:
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
 
         try {
-            upm_jhd1313m1.Jhd1313m1 lcd =
-                new upm_jhd1313m1.Jhd1313m1(i2cIndex);
+            upm_jhd1313m1.Jhd1313m1 lcd = new upm_jhd1313m1.Jhd1313m1(i2cIndex);
 
             lcd.clear();
             int ndx = 0;
@@ -80,7 +77,7 @@ public class JhdActivity extends Activity {
                 {0x22, 0x00, 0x66},   // violet
                 {0x33, 0x00, 0x44}};  // darker violet
             
-            // move to a worker thread
+            // TODO: move to a worker thread
             while (true) {
                 // Alternate rows on the LCD
                 lcd.setCursor(ndx % 2, 0);
@@ -99,9 +96,10 @@ public class JhdActivity extends Activity {
                 Thread.sleep(1000);
             }
 
-        // should not catch unqualifed exceptions and should also exit.
+        // TODO: Do not catch unqualifed exceptions and should also stack trace and exit.
         } catch (Exception e) {
             Log.e(TAG, "Error in UPM APIs", e);
+            // TODO: throw the exception up the stack or exit.
         }
     }
 }

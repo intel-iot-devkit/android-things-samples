@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">GroveTouch</string>
 
-    <string name="GPIO_Edison_Arduino">IO0</string>
-
-    <string name="Edison_Arduino">IO0</string>
-    <string name="Edison_Sparkfun">GP20</string>
-    <string name="Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="Touch_Edison_Arduino">IO0</string>
+    <string name="Touch_Edison_Sparkfun">GP20</string>
+    <string name="Touch_Joule_Tuchuck">DISPLAY_0_RST_N</string>
 </resources>

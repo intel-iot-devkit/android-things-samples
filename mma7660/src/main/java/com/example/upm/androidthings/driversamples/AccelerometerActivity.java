@@ -51,13 +51,13 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Arduino));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Accel_Edison_Arduino));
                 break;
             case BoardDefaults.DEVICE_EDISON_SPARKFUN:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Edison_Sparkfun));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Accel_Edison_Sparkfun));
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
-                i2cIndex = mraa.getI2cLookup(getString(R.string.Joule_Tuchuck));
+                i2cIndex = mraa.getI2cLookup(getString(R.string.Accel_Joule_Tuchuck));
                 break;
             default:
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
@@ -80,6 +80,7 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
             Log.i(TAG, "Accelerometer driver registered");
         } catch (IOException e) {
             Log.e(TAG, "Error initializing accelerometer driver: ", e);
+            // TODO: throw the exception up the stack or exit.
         }
     }
 

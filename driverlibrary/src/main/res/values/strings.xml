@@ -17,5 +17,6 @@
 
 <resources>
     <string name="app_name">driverlibrary</string>
+
     <string name="GPIO_Edison_Arduino">IO0</string>
 </resources>

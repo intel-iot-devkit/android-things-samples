@@ -47,13 +47,13 @@ public class GroveLed extends Activity {
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.Edison_Arduino));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Led_Edison_Arduino));
                 break;
             case BoardDefaults.DEVICE_EDISON_SPARKFUN:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.Edison_Sparkfun));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Led_Edison_Sparkfun));
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.Joule_Tuchuck));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Led_Joule_Tuchuck));
                 break;
             default:
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
@@ -67,7 +67,7 @@ public class GroveLed extends Activity {
 
         @Override
         public void run() {
-            //Moves the current thread into the background
+            // Moves the current thread into the background
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
             try {
@@ -77,11 +77,13 @@ public class GroveLed extends Activity {
                     led.off();
                     Thread.sleep(1000);
                 }
+
                 led.off();
                 led.delete();
 
-            }catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
+                // TODO: throw the exception up the stack or exit.
             }
         }
     };
