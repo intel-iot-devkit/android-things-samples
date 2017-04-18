@@ -2,7 +2,6 @@ package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Build;
 import android.util.Log;
 
 import mraa.mraa;
@@ -19,6 +18,7 @@ public class GroveButton extends Activity {
         }
     }
 
+    upm_grove.GroveButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,31 +30,40 @@ public class GroveButton extends Activity {
 
         switch (bd.getBoardVariant()) {
             case BoardDefaults.DEVICE_EDISON_ARDUINO:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.BUTTON_Edison_Arduino));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Edison_Arduino));
                 break;
             case BoardDefaults.DEVICE_EDISON_SPARKFUN:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.BUTTON_Edison_Sparkfun));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Edison_Sparkfun));
                 break;
             case BoardDefaults.DEVICE_JOULE_TUCHUCK:
-                gpioIndex = mraa.getGpioLookup(getString(R.string.BUTTON_Joule_Tuchuck));
+                gpioIndex = mraa.getGpioLookup(getString(R.string.Joule_Tuchuck));
                 break;
             default:
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
 
-        try {
-            upm_grove.GroveButton button = new upm_grove.GroveButton(gpioIndex);
 
-            // This needs to be moved to a separate thread.
-            while (true) {
-                Log.i(TAG, button.name() + " value is " + button.value());
-                Thread.sleep(1000);
-            }
-
-        // You shouldn't catch unclassified exceptions.
-        // You probably should exit should an exception be caught.
-        } catch(Exception e) {
-            Log.e(TAG, "Error in UPM API", e);
-        }
+        button = new upm_grove.GroveButton(gpioIndex);
+        buttonTask.run();
     }
+
+    Runnable buttonTask = new Runnable() {
+
+        @Override
+        public void run() {
+            //Moves the current thread into the background
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+            try {
+
+                while (true) {
+                    Log.i(TAG, button.name() + " value is " + button.value());
+                    Thread.sleep(1000);
+                }
+
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }
