@@ -88,7 +88,7 @@ public class GroveRelay extends Activity {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }finally{
+            } finally {
                 relay.off();
                 relay.delete();
                 GroveRelay.this.finish();

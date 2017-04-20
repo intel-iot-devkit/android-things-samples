@@ -80,7 +80,7 @@ public class GroveButton extends Activity {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            } finally{
+            } finally {
                 button.delete();
                 GroveButton.this.finish();
             }

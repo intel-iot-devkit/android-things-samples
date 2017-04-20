@@ -80,7 +80,7 @@ public class GroveLed extends Activity {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }finally{
+            } finally {
                 led.off();
                 led.delete();
                 GroveLed.this.finish();

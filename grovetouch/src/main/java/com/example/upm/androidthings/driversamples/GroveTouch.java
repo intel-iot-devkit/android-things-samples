@@ -83,7 +83,7 @@ public class GroveTouch extends Activity {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }finally{
+            } finally {
                 touch.delete();
                 GroveTouch.this.finish();
             }
