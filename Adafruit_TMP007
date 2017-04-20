@@ -1,0 +1,202 @@
+package com.example.anthony.zombieproject;
+
+/**
+ * Created by antho on 4/20/2017.
+ */
+import mraa.I2c;
+public class Adafruit_TMP007 {
+
+    private static final boolean TMP007_DEBUG = false;
+
+    //private static final int TESTDIE = 0x0C78;
+    //private static final int TESTVOLT = 0xFEED;
+
+    private static final short TMP007_VOBJ      = 0x00;
+    private static final short TMP007_TDIE      = 0x01;
+    private static final short TMP007_CONFIG    = 0x02;
+    private static final short TMP007_TOBJ      = 0x03;
+    private static final short TMP007_STATUS    = 0x04;
+    private static final short TMP007_STATMASK  = 0x05;
+
+    public static final int TMP007_CFG_RESET   = 0x8000;
+    public static final int TMP007_CFG_MODEON   = 0x1000;
+    public static final int TMP007_CFG_1SAMPLE  = 0x0000;
+    public static final int TMP007_CFG_2SAMPLE  = 0x0200;
+    public static final int TMP007_CFG_4SAMPLE  = 0x0400;
+    public static final int TMP007_CFG_8SAMPLE  = 0x0600;
+    public static final int  TMP007_CFG_16SAMPLE = 0x0800;
+    public static final int TMP007_CFG_ALERTEN  = 0x0100;
+    public static final int  TMP007_CFG_ALERTF   = 0x0080;
+    public static final int TMP007_CFG_TRANSC   = 0x0040;
+
+    private static final int  TMP007_STAT_ALERTEN = 0x8000;
+    private static final int  TMP007_STAT_CRTEN   = 0x4000;
+
+    public static final short  TMP007_I2CADDR  = 0x40;
+    public static final short TMP007_DEVID = 0x1F;
+
+
+    static {
+        try {
+            System.loadLibrary("mraajava");
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println(
+                    "Native code library failed to load. See the chapter on Dynamic Linking Problems in the SWIG Java documentation for help.\n" +
+                            e);
+            System.exit(1);
+        }
+    }
+
+
+
+    public short getUint8(short s){
+        return (short)(s & 0x00ff);
+    }
+
+    public int getUint16(int i){
+        return i & 0x0000ffff;
+    }
+
+    public long getUint32(long l){
+        return l & 0x00000000ffffffff;
+    }
+
+    private final short _addr;
+    private final short _port;
+    private I2c i2c;
+
+    Adafruit_TMP007(short i2cPort,short i2caddr){
+        _addr = i2caddr;
+        _port = i2cPort;
+    }
+
+
+    Adafruit_TMP007(short i2cPort){
+        _addr = TMP007_I2CADDR;
+        _port = i2cPort;
+    }
+
+    boolean begin() {
+        return begin(TMP007_CFG_16SAMPLE);
+    }
+
+
+    boolean begin(int samplerate) {
+        i2c = new I2c(_port);
+        //Readdeing do not change if the 2 write16 are called.
+        //write16(TMP007_CONFIG, TMP007_CFG_MODEON | TMP007_CFG_ALERTEN |
+        //        TMP007_CFG_TRANSC | samplerate |TMP007_CFG_RESET);
+        //write16(TMP007_STATMASK, TMP007_STAT_ALERTEN |TMP007_STAT_CRTEN);
+        // enable conversion ready alert
+
+        int did;
+        did = read16(TMP007_DEVID);
+
+        if (TMP007_DEBUG) {
+            System.out.print("did = 0x");
+            System.out.println(Integer.toHexString(did));
+        }
+        if (did != 0x78) return false;
+        return true;
+    }
+
+    double readDieTempC() {
+        double Tdie = readRawDieTemperature();
+        Tdie *= 0.03125; // convert to celsius
+        if (TMP007_DEBUG) {
+            System.out.print("Tdie = ");
+            System.out.print(Tdie);
+            System.out.println(" C");
+        }
+        return Tdie;
+    }
+
+    double  readObjTempC() {
+        int raw = read16(TMP007_TOBJ);
+        // invalid
+        if ((raw & 0x1) == 1) return 0;
+        raw = getUint16(raw >> 2);
+
+
+        double Tobj = raw;
+        Tobj *= 0.03125; // convert to celsius
+        if (TMP007_DEBUG) {
+            System.out.print("Tobj = ");
+            System.out.print(Tobj);
+            System.out.println(" C");
+        }
+        return Tobj;
+    }
+
+    int readRawDieTemperature() {
+        int raw = read16(TMP007_TDIE);
+
+        if (TMP007_DEBUG) {
+
+            //if(TESTDIE != 0) {
+            //    raw = TESTDIE;
+            //}
+
+            System.out.print("Raw Tambient: 0x");
+            System.out.print(Integer.toHexString(raw));
+
+
+            float v = raw / 4;
+            v *= 0.03125;
+            System.out.print(" (");
+            System.out.print(v);
+            System.out.println(" *C)");
+        }
+        raw = getUint16(raw >> 2);
+        return raw;
+    }
+
+    int readRawVoltage() {
+        int raw;
+
+        raw = read16(TMP007_VOBJ);
+
+        if (TMP007_DEBUG) {
+
+            //if(TESTVOLT != 0) {
+            //    raw = TESTVOLT;
+            //}
+
+            System.out.print("Raw voltage: 0x");
+            System.out.print(Integer.toHexString(raw));
+            float v = raw;
+            v *= 156.25;
+            v /= 1000;
+            System.out.print(" (");
+            System.out.print(v);
+            System.out.println(" uV)");
+        }
+        return raw;
+    }
+
+
+    /*********************************************************************/
+
+    int read16(short a) {
+        int ret;
+        byte[] rx_tx_buf = new  byte[2];
+
+        i2c.address(_addr);
+        i2c.readBytesReg(getUint8(a),rx_tx_buf);
+        System.out.print("RAW reading: ");
+        System.out.print(getUint8(rx_tx_buf[0]));
+        System.out.print(" : ");
+        System.out.println(getUint8(rx_tx_buf[1]));
+
+        ret = getUint8(rx_tx_buf[0]);
+        ret = getUint16(ret << 8);
+        ret = getUint16(ret | getUint8(rx_tx_buf[1]) );
+
+        return ret;
+    }
+
+    void write16(short a, int d) {
+        i2c.address(_addr); // start transmission to device
+        i2c.writeWordReg(getUint8(a),getUint16(d));
+    }
+}
