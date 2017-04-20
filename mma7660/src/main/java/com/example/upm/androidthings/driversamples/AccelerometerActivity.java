@@ -80,7 +80,7 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
             Log.i(TAG, "Accelerometer driver registered");
         } catch (IOException e) {
             Log.e(TAG, "Error initializing accelerometer driver: ", e);
-            // TODO: throw the exception up the stack or exit.
+            AccelerometerActivity.this.finish();
         }
     }
 
