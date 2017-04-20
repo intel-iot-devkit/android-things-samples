@@ -1,0 +1,26 @@
+void VEML6070(){
+        short VEML6070_ADDR_L = 0x38;
+        short VEML6070_1_T = 0x01;
+
+        I2c i2c = new I2c(2);
+        //i2c.address(VEML6070_ADDR_L);
+        //i2c.writeByte((short)((VEML6070_1_T << 2) | 0x02));
+
+
+        i2c.address((short)0x38);
+        int uvi_l = i2c.readByte();
+        while(uvi_l == 0){
+            uvi_l = i2c.readByte();
+        }
+
+        i2c.address((short)0x39);
+
+        int uvi = i2c.readByte();
+        uvi =  uvi << 8;
+
+        uvi |= uvi_l;
+        System.out.println("uvi: " + uvi);
+        System.out.println("***********************");
+        i2c.delete();
+
+    }
