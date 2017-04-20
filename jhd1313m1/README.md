@@ -1,24 +1,53 @@
-Jhd1313m1 LCD sample for Android Things using UPM
+Grove jhd1313m1 I2C connected LCD display sample for Android Things using UPM
+-----------------------------------------------------------------------------
 
-Build and install using Android Studio:
-  click on the "Run" button.
+This example demonstrates connecting an I2C display to Android Things using UPM.
+Commands to display text and colors are sent to an LCD display.
 
-If you prefer to run on the command line, from this repository's root directory, type:
-  ./gradlew jhd1313m1:installDebug
+Pre-Requisites:
+---------------
+Use of the Grove Kit (for Joule or Edison) makes this easy. See the following links for getting
+a starter kit.
 
-To start the activity (if not started by Android Studio):
-  adb shell am start com.example.upm.androidthings.driversamples/.Jhd1313m1Activity
-
-Be sure that you have the Grove Jhd1313m1 temperature sensor connected to your I2C bus.
-If you have everything set up correctly, the current temperature will be logged to logcat.
+*  https://www.seeedstudio.com/Grove-Maker-Kit-for-Intel-Joule-p-2796.html
+*  https://www.seeedstudio.com/Grove-Starter-Kit-V3-p-1855.html
 
 
-License
--------
-Copyright (c) 2017 Intel Corporation.
+You will need:
 
-Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+1. Android Things compatible board.
+2. Grove header or Breakout board.
+3. A JHD1313m1 LCD display (it's in the grove kit).
 
-http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+Build and install:
+------------------
+
+On Android Studio, select the "jhd1313m1" module in select box by the "Run" button
+and then click on the "Run" button.
+
+
+Changing the I2C bus
+--------------------
+
+
+The I2C bus to be used is specified in the strings.xml file (src/res/values directory).
+
+````
+<resources>
+    <string name="app_name">Jhd1313m1lcd</string>
+
+    <string name="Lcd_Edison_Arduino">I2C6</string>
+    <string name="Lcd_Edison_Sparkfun">I2C1</string>
+    <string name="Lcd_Joule_Tuchuck">I2C0</string>
+</resources>
+````
+
+The code will automatically determine the board type being run on (modify BoarDefaults.java
+in the driver library to add another board) and select a string from this file for the I2C bus.
+The above example uses I2C6 on the Edison Arduino shield and I2C0 on the Joule Tuchuck
+development board. These strings are programmed into the Peripheral Manager and read from their
+into the UPM library to determine the bus to be used.
+
+See the top level README.md for a table describing the available I2C busses and where to find them
+on the board.

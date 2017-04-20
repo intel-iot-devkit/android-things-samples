@@ -1,40 +1,56 @@
-GroveButton sample for Android Things using UPM:
+Grove Button sample for Android Things using UPM
+-----------------------------------------------
 
-This example verifies the GPIO protocol
+This example demonstrates a GPIO connection using UPM.
 
 Pre-Requisites:
 ---------------
-•  Android Things compatible board.
-•  Breakthrough board.
-•  1 push button.
+Use of the Grove Kit (for Joule or Edison) makes this easy. See the following links for getting
+a starter kit.
+
+*  https://www.seeedstudio.com/Grove-Maker-Kit-for-Intel-Joule-p-2796.html
+*  https://www.seeedstudio.com/Grove-Starter-Kit-V3-p-1855.html
+
+
+You will need:
+
+1. Android Things compatible board.
+2. Grove header or Breakout board.
+3. A Grove push button.
+
 
 Build and install:
 ------------------
 
- On Android Studio, select the “grovebutton” module in select box by the “Run” button
+On Android Studio, select the "grovebutton" module in select box by the "Run" button
 and then click on the "Run" button.
 
-To run on the command line:
----------------------------
 
-from this repository root directory, type the below command
+Changing the GPIO pin
+---------------------
+This example uses a GPIO (digital input) to read the state of a button. The GPIO could be connected
+via the shield to a Grove button... or it could be a button or wire on a breakout board directly
+connected between a GPIO line and Vcc.
 
-./gradlew grovebutton:installDebug adb shell 
-    am start com.example.upm.androidthings.driversamples/.GroveButton
+The GPIO line to be used is specified in the strings.xml file (src/res/values directory).
 
-If everything is set up correctly, the button press event value of the sensor
-will be logged to logcat.
+````
+<resources>
+    <string name="app_name">GroveButton</string>
 
-License Copyright (c) 2017 Intel Corporation.  Licensed to the
-Apache Software Foundation (ASF) under one or more contributor license
-agreements. See the NOTICE file distributed with this work for additional
-information regarding copyright ownership. The ASF licenses this file to
-you under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of
-the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
-by applicable law or agreed to in writing, software distributed under
-the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-CONDITIONS OF ANY KIND, either express or implied. See the License for the
-specific language governing permissions and limitations under the License.
+    <string name="Button_Edison_Arduino">IO0</string>
+    <string name="Button_Edison_Sparkfun">GP20</string>
 
+    // TODO: Will need to change this string to reflect the updated pio_hal
+    <string name="Button_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+</resources>
+````
 
+The code will automatically determine the board type being run on (modify BoardDefaults.java
+in the driver library to add another board) and select a string from this file for the GPIO line.
+The above example uses IO0 on the Edison Arduino shield and DISPLAY_0_RST_N on the Joule Tuchuck
+development board. These strings are programmed into the Peripheral Manager and read from their
+into the UPM library to determine the GPIO pin to be used.
+
+See the top level README.md for a table describing the available GPIO pins and where to find them
+on the board.

@@ -1,23 +1,55 @@
-Mma7660 Accelerometer sample for Android Things using UPM
+Grove mma7660 I2C connected Accelerometer sample for Android Things using UPM
+-----------------------------------------------------------------------------
 
-Build and install
+This example demonstrates connecting an I2C Accelerometer to Android Things using UPM.
+The sensor is registered to the Android Things User Sensor manager and then the sensor manager
+is used to read the sensor. Gravimetric readings for each (X,Y,Z) axis are printed in the logcat.
 
-On Android Studio, click on the "Run" button.
+The driverlibrary contains the class used to register with the sensor manager.
 
-If you prefer to run on the command line, from this repository's root directory, type
+Pre-Requisites:
+---------------
+Use of the Grove Kit (for Joule or Edison) makes this easy. See the following links for getting
+a starter kit.
 
-./gradlew mma7660:installDebug
+*  https://www.seeedstudio.com/Grove-Maker-Kit-for-Intel-Joule-p-2796.html
+*  https://www.seeedstudio.com/Grove-Starter-Kit-V3-p-1855.html
 
-adb shell am start com.example.upm.androidthings.driversamples/.AccelerometerActivity
 
-If you have everything set up correctly, the current temperature will be logged to logcat.
+You will need:
 
-License
+1. Android Things compatible board.
+2. Grove header or Breakout board.
+3. A mma7660 3 axis digital Accelerometer (available separately from Grove).
 
-Copyright (c) 2017 Intel Corporation.
+   https://www.seeedstudio.com/s/7660.html
 
-Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+Build and install:
+------------------
+On Android Studio, select the "mma7660" module in select box by the "Run" button
+and then click on the "Run" button.
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+Changing the I2C bus
+--------------------
+The I2C bus to be used is specified in the strings.xml file (src/res/values directory).
+
+````
+<resources>
+    <string name="app_name">Accelerometer Mma7660</string>
+
+    <string name="Accel_Edison_Arduino">I2C6</string>
+    <string name="Accel_Edison_Sparkfun">I2C1</string>
+    <string name="Accel_Joule_Tuchuck">I2C0</string>
+</resources>
+````
+
+The code will automatically determine the board type being run on (modify BoardDefaults.java
+in the driver library to add another board) and select a string from this file for the I2C bus.
+The above example uses I2C6 on the Edison Arduino shield and I2C0 on the Joule Tuchuck
+development board. These strings are programmed into the Peripheral Manager and read from their
+into the UPM library to determine the bus to be used.
+
+See the top level README.md for a table describing the available I2C busses and where to find them
+on the board.
