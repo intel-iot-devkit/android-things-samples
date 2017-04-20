@@ -18,9 +18,12 @@ package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.example.upm.androidthings.driverlibrary.BoardDefaults;
+
 import mraa.mraa;
 
 /**
@@ -32,6 +35,10 @@ import mraa.mraa;
 
 public class JhdActivity extends Activity {
     private static final String TAG = "JhdActivity";
+
+    private upm_jhd1313m1.Jhd1313m1 lcd;
+    private HandlerThread mDisplayThread;
+
     static {
         try {
             System.loadLibrary("javaupm_jhd1313m1");
@@ -41,10 +48,12 @@ public class JhdActivity extends Activity {
         }
     }
 
+    private Runnable mDisplayLoop = this::displayOnLcd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "Starting JhdActivity");
+        Log.d(TAG, "Starting JhdActivity");
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int i2cIndex = -1;
@@ -63,43 +72,65 @@ public class JhdActivity extends Activity {
                 throw new IllegalStateException("Unknown Board Variant: " + bd.getBoardVariant());
         }
 
-        try {
-            upm_jhd1313m1.Jhd1313m1 lcd = new upm_jhd1313m1.Jhd1313m1(i2cIndex);
+        mDisplayThread = new HandlerThread("Display Thread");
+        mDisplayThread.start();
+        Handler mDisplayHandler = new Handler(mDisplayThread.getLooper());
 
+        lcd = new upm_jhd1313m1.Jhd1313m1(i2cIndex);
+        mDisplayHandler.post(mDisplayLoop);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Display Loop Destroyed");
+
+        if (mDisplayThread != null) {
+            mDisplayThread.quitSafely();
+        }
+        lcd.delete();
+    }
+
+    private void displayOnLcd() {
+        if (lcd != null ) {
             lcd.clear();
+
             int ndx = 0;
             short[][] rgb = new short[][]{
-                {0xd1, 0x00, 0x00},   // red
-                {0xff, 0x66, 0x22},   // orange
-                {0xff, 0xda, 0x21},   // yellow
-                {0x33, 0xdd, 0x00},   // green
-                {0x11, 0x33, 0xcc},   // blue
-                {0x22, 0x00, 0x66},   // violet
-                {0x33, 0x00, 0x44}};  // darker violet
-            
-            // TODO: move to a worker thread
-            while (true) {
-                // Alternate rows on the LCD
-                lcd.setCursor(ndx % 2, 0);
+                    {0xd1, 0x00, 0x00},   // red
+                    {0xff, 0x66, 0x22},   // orange
+                    {0xff, 0xda, 0x21},   // yellow
+                    {0x33, 0xdd, 0x00},   // green
+                    {0x11, 0x33, 0xcc},   // blue
+                    {0x22, 0x00, 0x66},   // violet
+                    {0x33, 0x00, 0x44}};  // darker violet
 
-                // Change the color
-                short r = rgb[ndx % 7][0];
-                short g = rgb[ndx % 7][1];
-                short b = rgb[ndx % 7][2];
-                lcd.setColor(r, g, b);
-                lcd.write("Hello World " + ndx);
+            while(true) {
+                try {
+                    // Alternate rows on the LCD
+                    lcd.setCursor(ndx % 2, 0);
 
-                // Echo via printf
-                Log.i(TAG, "Hello World" + ndx++);
-                Log.i(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
+                    // Change the color
+                    short r = rgb[ndx % 7][0];
+                    short g = rgb[ndx % 7][1];
+                    short b = rgb[ndx % 7][2];
+                    lcd.setColor(r, g, b);
 
-                Thread.sleep(1000);
+                    lcd.write("Hello World " + ndx);
+
+                    // Echo via printf
+                    Log.d(TAG, "Hello World" + ndx++);
+                    Log.d(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
+
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } finally{
+                    mDisplayThread.quitSafely();
+                }
             }
-
-        // TODO: Do not catch unqualifed exceptions and should also stack trace and exit.
-        } catch (Exception e) {
-            Log.e(TAG, "Error in UPM APIs", e);
-            // TODO: throw the exception up the stack or exit.
+        } else{
+            JhdActivity.this.finish();
         }
     }
 }
