@@ -183,10 +183,12 @@ public class Adafruit_TMP007 {
 
         i2c.address(_addr);
         i2c.readBytesReg(getUint8(a),rx_tx_buf);
-        System.out.print("RAW reading: ");
-        System.out.print(getUint8(rx_tx_buf[0]));
-        System.out.print(" : ");
-        System.out.println(getUint8(rx_tx_buf[1]));
+        if (TMP007_DEBUG) {
+            System.out.print("RAW reading: ");
+            System.out.print(getUint8(rx_tx_buf[0]));
+            System.out.print(" : ");
+            System.out.println(getUint8(rx_tx_buf[1]));
+        }
 
         ret = getUint8(rx_tx_buf[0]);
         ret = getUint16(ret << 8);
