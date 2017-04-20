@@ -17,6 +17,7 @@
 package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -60,7 +61,7 @@ public class GroveButton extends Activity {
         }
 
         button = new upm_grove.GroveButton(gpioIndex);
-        buttonTask.run();
+        AsyncTask.execute(buttonTask);
     }
 
     Runnable buttonTask = new Runnable() {
@@ -78,9 +79,20 @@ public class GroveButton extends Activity {
                 }
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                // TODO: throw the exception up the stack or exit.
+                Thread.currentThread().interrupt();
+            } finally{
+                button.delete();
+                GroveButton.this.finish();
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "in onDestroy() call");
+        Thread.currentThread().interrupt();
+        button.delete();
+    }
 }

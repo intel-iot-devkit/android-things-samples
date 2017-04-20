@@ -17,6 +17,7 @@
 package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -60,7 +61,7 @@ public class GroveTouch extends Activity {
         }
 
         touch = new upm_ttp223.TTP223(gpioIndex);
-        touchSensorTask.run();
+        AsyncTask.execute(touchSensorTask);
     }
 
     Runnable touchSensorTask = new Runnable() {
@@ -81,9 +82,19 @@ public class GroveTouch extends Activity {
                 }
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                // TODO: throw the exception up the stack or exit.
+                Thread.currentThread().interrupt();
+            }finally{
+                touch.delete();
+                GroveTouch.this.finish();
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Thread.currentThread().interrupt();
+        touch.delete();
+    }
 }

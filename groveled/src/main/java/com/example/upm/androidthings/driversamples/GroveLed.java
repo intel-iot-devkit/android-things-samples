@@ -17,6 +17,7 @@
 package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -60,14 +61,13 @@ public class GroveLed extends Activity {
         }
 
         led = new upm_grove.GroveLed(gpioIndex);
-        ledTask.run();
+        AsyncTask.execute(ledTask);
     }
 
     Runnable ledTask = new Runnable() {
 
         @Override
-        public void run() {
-            // Moves the current thread into the background
+        public void run(){
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
             try {
@@ -78,13 +78,22 @@ public class GroveLed extends Activity {
                     Thread.sleep(1000);
                 }
 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }finally{
                 led.off();
                 led.delete();
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                // TODO: throw the exception up the stack or exit.
+                GroveLed.this.finish();
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "in onDestroy() call");
+        Thread.currentThread().interrupt();
+        led.delete();
+    }
 }

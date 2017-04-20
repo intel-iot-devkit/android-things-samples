@@ -17,6 +17,7 @@
 package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -61,7 +62,7 @@ public class GroveRelay extends Activity {
         }
 
         relay = new upm_grove.GroveRelay(gpioIndex);
-        relayTask.run();
+        AsyncTask.execute(relayTask);
 
     }
 
@@ -85,13 +86,22 @@ public class GroveRelay extends Activity {
                     Thread.sleep(1000);
                 }
 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }finally{
                 relay.off();
                 relay.delete();
+                GroveRelay.this.finish();
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                // TODO: throw the exception up the stack or exit.
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Thread.currentThread().interrupt();
+        relay.delete();
+    }
 }
