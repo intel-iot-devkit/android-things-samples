@@ -39,15 +39,6 @@ public class JhdActivity extends Activity {
     private upm_jhd1313m1.Jhd1313m1 lcd;
     private HandlerThread mDisplayThread;
 
-    static {
-        try {
-            System.loadLibrary("javaupm_jhd1313m1");
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Native library failed to load." + e);
-            System.exit(1);
-        }
-    }
-
     private Runnable mDisplayLoop = this::displayOnLcd;
 
     @Override
