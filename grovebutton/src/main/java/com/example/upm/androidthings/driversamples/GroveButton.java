@@ -27,15 +27,6 @@ import mraa.mraa;
 public class GroveButton extends Activity {
     private static final String TAG = "GroveButtonActivity";
 
-    static {
-        try {
-            System.loadLibrary("javaupm_grove");
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Native code library failed to load." +  e);
-            System.exit(1);
-        }
-    }
-
     upm_grove.GroveButton button;
 
     @Override
