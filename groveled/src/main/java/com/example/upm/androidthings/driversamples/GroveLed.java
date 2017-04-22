@@ -27,15 +27,6 @@ import mraa.mraa;
 public class GroveLed extends Activity {
     private static final String TAG = "GroveLED";
 
-    static {
-        try {
-            System.loadLibrary("javaupm_grove");
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Native code library failed to load." + e);
-            System.exit(1);
-        }
-    }
-
     upm_grove.GroveLed led;
 
     @Override

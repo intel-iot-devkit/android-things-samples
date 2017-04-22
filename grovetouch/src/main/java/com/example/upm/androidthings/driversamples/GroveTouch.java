@@ -27,14 +27,6 @@ import mraa.mraa;
 public class GroveTouch extends Activity {
 
     private static final String TAG = "GroveTouchActivity";
-    static {
-        try {
-            System.loadLibrary("javaupm_ttp223");
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Native code library failed to load." +  e);
-            System.exit(1);
-        }
-    }
 
     upm_ttp223.TTP223 touch;
 

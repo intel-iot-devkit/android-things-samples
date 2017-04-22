@@ -28,15 +28,6 @@ public class GroveRelay extends Activity {
 
     private static final String TAG = "GroveRelayActivity";
 
-    static {
-        try {
-            System.loadLibrary("javaupm_grove");
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Native code library failed to load." +  e);
-            System.exit(1);
-        }
-    }
-
     upm_grove.GroveRelay relay;
 
     @Override
