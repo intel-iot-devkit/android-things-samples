@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-include ':accel_on_lcd', ':grovebuzzer'
+include ':accel_on_lcd'
+include ':grovebuzzer'
 include ':driverlibrary'
 include ':grovebutton'
 include ':groveled'
