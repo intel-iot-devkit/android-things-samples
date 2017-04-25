@@ -8,6 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.upm.androidthings.driversamples.GroveLed">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Hello World!" android:id="@+id/activity_led_status"/>
 </RelativeLayout>
