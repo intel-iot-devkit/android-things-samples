@@ -15,6 +15,7 @@
  */
 
 include ':accel_on_lcd'
+include ':bme280'
 include ':driverlibrary'
 include ':grovebutton'
 include ':groveled'
