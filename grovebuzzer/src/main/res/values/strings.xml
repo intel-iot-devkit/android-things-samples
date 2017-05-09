@@ -4,6 +4,5 @@
     <string name="Buzzer_Edison_Arduino">PWM0</string>
     <string name="Buzzer_Edison_Sparkfun">PWM0</string>
 
-    // TODO: Will need to change this string to reflect the updated pio_hal
-    <string name="Buzzer_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="Buzzer_Joule_Tuchuck">PWM_0</string>
 </resources>
