@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BME280</string>
+
+    <string name="Bme_Edison_Arduino">I2C6</string>
+    <string name="Bme_Edison_Sparkfun">I2C1</string>
+    <string name="Bme_Joule_Tuchuck">I2C0</string>
+</resources>
