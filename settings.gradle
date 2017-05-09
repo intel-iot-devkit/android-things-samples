@@ -16,10 +16,12 @@
 
 include ':accel_on_lcd'
 include ':bme280'
+include ':tmp006'
 include ':driverlibrary'
 include ':grovebutton'
 include ':groveled'
 include ':groverelay'
 include ':grovetouch'
+include ':grovebuzzer'
 include ':jhd1313m1'
 include ':mma7660'
