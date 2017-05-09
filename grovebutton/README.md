@@ -41,8 +41,7 @@ The GPIO line to be used is specified in the strings.xml file (src/res/values di
     <string name="Button_Edison_Arduino">IO0</string>
     <string name="Button_Edison_Sparkfun">GP20</string>
 
-    // TODO: Will need to change this string to reflect the updated pio_hal
-    <string name="Button_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="Button_Joule_Tuchuck">J6_1</string>
 </resources>
 ````
 

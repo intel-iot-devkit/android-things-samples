@@ -40,13 +40,13 @@ The GPIO line to be used is specified in the strings.xml file (src/res/values di
 
     <string name="Touch_Edison_Arduino">IO0</string>
     <string name="Touch_Edison_Sparkfun">GP20</string>
-    <string name="Touch_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="Touch_Joule_Tuchuck">J6_1</string>
 </resources>
 ````
 
 The code will automatically determine the board type being run on (modify BoardDefaults.java
 in the driver library to add another board) and select a string from this file for the GPIO line.
-The above example uses IO0 on the Edison Arduino shield and DISPLAY_0_RST_N on the Joule Tuchuck
+The above example uses IO0 on the Edison Arduino shield and J6_1 on the Joule Tuchuck
 development board. These strings are programmed into the Peripheral Manager and read from their
 into the UPM library to determine the GPIO pin to be used.
 

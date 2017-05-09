@@ -3,5 +3,5 @@
 
     <string name="Relay_Edison_Arduino">IO0</string>
     <string name="Relay_Edison_Sparkfun">GP20</string>
-    <string name="Relay_Joule_Tuchuck">DISPLAY_0_RST_N</string>
+    <string name="Relay_Joule_Tuchuck">J6_1</string>
 </resources>
