@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.upm.androidthings.driverlibrary;
+package com.example.upm.androidthings.driversupport;
 
 import android.content.Context;
 import android.content.res.Resources;

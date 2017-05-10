@@ -41,7 +41,7 @@ Importing UPM Android studio projects
    ````
    dependencies {
        compile 'io.mraa.at.upm:upm_jhd1313m1:1.1.0'
-       compile project(':driverlibrary')
+       compile project(':driversupport')
        provided 'com.google.android.things:androidthings:0.3-devpreview'
    }
     ````
