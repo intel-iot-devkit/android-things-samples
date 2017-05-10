@@ -19,7 +19,7 @@ package com.example.upm.androidthings.driversupport;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import mraa.*;
+import mraa.mraa;
 
 public class BoardDefaults {
     // returned by Build.device (does not differentiate the carrier boards)
