@@ -1,0 +1,89 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ATCamara\"><param name=\"android-package\" value=\"com.apray.plugin.ATCamara\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ATTensorflow\"><param name=\"android-package\" value=\"com.apray.plugin.ATTensorflow\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 2
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "com.example.ATCamara": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "com.example.ATTensorflow": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        }
+    },
+    "dependent_plugins": {},
+    "modules": [
+        {
+            "id": "com.example.ATCamara.ATCamara",
+            "file": "plugins/com.example.ATCamara/www/ATCamara.js",
+            "pluginId": "com.example.ATCamara",
+            "clobbers": [
+                "ATCamara"
+            ]
+        },
+        {
+            "id": "com.example.ATTensorflow.ATTensorflow",
+            "file": "plugins/com.example.ATTensorflow/www/ATTensorflow.js",
+            "pluginId": "com.example.ATTensorflow",
+            "clobbers": [
+                "ATTensorflow"
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "cordova-plugin-whitelist": "1.3.2",
+        "cordova-plugin-compat": "1.1.0",
+        "com.example.ATCamara": "0.1.0",
+        "com.example.ATTensorflow": "0.1.1"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "com.example.ATCamara": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "com.example.ATTensorflow": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
+        }
+    }
+}
