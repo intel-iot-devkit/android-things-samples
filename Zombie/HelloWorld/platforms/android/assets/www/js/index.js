@@ -53,23 +53,15 @@ var app = {
         document.getElementById('clickMe').disabled = true;
         var image = document.getElementById('myImage');
         image.src = "";
-        ATCamara.NoNo("World", camsuccess, failure);
+        ATCamara.NoNo("World", success, failure);
     }
 
-    var camsuccess = function(imageData) {
+    var success = function(imageData) {
          var image = document.getElementById('myImage');
          image.src = "data:image/jpeg;base64," + imageData;
          document.getElementById('clickMe').disabled = false;
-         ATTensorflow.NoNo("World", TFsuccess, failure);
+
     }
-
-
-    var TFsuccess = function(tags) {
-        alert("AT-Tensorflow:"+tags);
-     }
-
-
-
 
     var failure = function( message ) {
         if(message == "IOException"){

@@ -4,6 +4,12 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="ATCamara">
+        <param name="android-package" value="com.apray.plugin.ATCamara" />
+    </feature>
+    <feature name="ATTensorflow">
+        <param name="android-package" value="com.apray.plugin.ATTensorflow" />
+    </feature>
     <name>HelloCordova</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -21,10 +27,4 @@
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
-    <feature name="ATCamara">
-        <param name="android-package" value="com.apray.plugin.ATCamara" />
-    </feature>
-    <feature name="ATTensorflow">
-        <param name="android-package" value="com.apray.plugin.ATTensorflow" />
-    </feature>
 </widget>
