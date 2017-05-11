@@ -57,7 +57,7 @@
 
 
     <source-file src="src/android/libs/Tensorflow-Android-Inference-alpha-debug.aar" target-dir="libs/"/>
-
+    <framework src="build-extras.gradle" custom="true" type="gradleReference" />
 
   </platform>
 
