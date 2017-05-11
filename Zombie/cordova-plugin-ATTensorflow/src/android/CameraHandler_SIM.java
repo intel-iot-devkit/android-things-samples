@@ -1,25 +1,38 @@
 package com.example.androidthings.imageclassifier;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.Callable;
 
+import static com.apray.plugin.ATCamara.changeBitmapContrastBrightness;
 import static java.lang.Thread.sleep;
 
 /**
  * Created by apray on 2/13/2017.
  */
 
-class CameraHandler_SIM {
+public class CameraHandler_SIM {
+
+
+
+    public interface CameraHandler_SIMInterface {
+        void onDownloadFinished(Bitmap result);
+    }
+
+
 
     public enum Dir {
         Up,
@@ -36,13 +49,20 @@ class CameraHandler_SIM {
 
     public static final int IMAGE_WIDTH = 224;
     public static final int IMAGE_HEIGHT = 224;
-    private ImageClassifierActivity imageAvailableListener;
+    private CameraHandler_SIMInterface imageAvailableListener;
 
     public boolean Moveleft = true;
     public int MovePos =0;
     public int Movecount =40;
     public void takePicture() {
-      new loadBitmap().execute(baseurl+"snapshot.cgi?lres=0"+LoginBits);
+        String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName = "/Pictures/out.bmp";
+        File imageFile= new File(storageDir+fileName);
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+        bitmap = Bitmap.createScaledBitmap(bitmap,400,400,false);
+        bitmap = changeBitmapContrastBrightness(bitmap,10f,90f);
+        imageAvailableListener.onDownloadFinished(Bitmap.createScaledBitmap(bitmap, IMAGE_WIDTH, IMAGE_HEIGHT, true));
+        //new loadBitmap().execute(baseurl+"snapshot.cgi?lres=0"+LoginBits);
 
     }
 
@@ -82,7 +102,7 @@ class CameraHandler_SIM {
      * Initialize the camera device
      */
     public void initializeCamera(Context context,
-                                 Handler backgroundHandler, ImageClassifierActivity imageAvailableListener) {
+                                 Handler backgroundHandler, CameraHandler_SIMInterface imageAvailableListener) {
         this.imageAvailableListener = imageAvailableListener;
     }
 
@@ -155,7 +175,7 @@ class CameraHandler_SIM {
                 is = conn.getInputStream();
                 bis = new BufferedInputStream(is, 8192);
                 bm = BitmapFactory.decodeStream(bis);
-                imageAvailableListener.onImageAvailable(Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, true));
+                imageAvailableListener.onDownloadFinished(Bitmap.createScaledBitmap(bm, IMAGE_WIDTH, IMAGE_HEIGHT, true));
             }
             catch (Exception e)
             {
