@@ -9,8 +9,17 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Base64;
 import android.util.Log;
+
+import com.example.androidthings.imageclassifier.CameraHandler_SIM;
+import com.example.androidthings.imageclassifier.ImagePreprocessor;
+import com.example.androidthings.imageclassifier.classifier.Classifier;
+import com.example.androidthings.imageclassifier.classifier.TensorFlowImageClassifier;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
@@ -28,6 +37,9 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.graphics.ImageFormat.JPEG;
 import static java.lang.Thread.sleep;
@@ -37,18 +49,46 @@ import org.apache.cordova.PermissionHelper;
 
 
 public class ATTensorflow extends CordovaPlugin {
-
-    public static final int TAKE_PIC_SEC = 0;
-
-    public static final int SERVERPORT = 8080;
-    private static final String SERVER_IP = "127.0.0.1";
-    private org.apache.cordova.CallbackContext callbackContext;
-    int mQuality = 50;
-    private String Tag = "ATTensorflow";
+    private static final String TAG = "ATTensorflow";
+    private HandlerThread mBackgroundThread;
+    private Handler mBackgroundHandler;
+    private CallbackContext callbackContext;
+    private AtomicBoolean mReady = new AtomicBoolean(false);
 
 
-    protected final static String[] permissions = { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.INTERNET,Manifest.permission.ACCESS_NETWORK_STATE };
+    private ImagePreprocessor mImagePreprocessor;
+    private TextToSpeech mTtsEngine;
+    private CameraHandler_SIM mCameraHandler;
 
+    private TensorFlowImageClassifier mTensorFlowClassifier;
+
+
+    @Override
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+
+        //mBackgroundThread = new HandlerThread("BackgroundThread");
+        //mBackgroundThread.start();
+        //mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+        //mBackgroundHandler.post(mInitializeOnBackground);
+        mCameraHandler = new CameraHandler_SIM();
+
+        mImagePreprocessor = new ImagePreprocessor(CameraHandler_SIM.IMAGE_WIDTH,
+                CameraHandler_SIM.IMAGE_HEIGHT, TensorFlowImageClassifier.INPUT_SIZE);
+
+        mCameraHandler = CameraHandler_SIM.getInstance();
+        mCameraHandler.initializeCamera(
+                ATTensorflow.this.cordova.getActivity(), mBackgroundHandler,
+                new CameraHandler_SIM.CameraHandler_SIMInterface() {
+                    @Override
+                    public void onDownloadFinished(Bitmap result) {
+                        onImageAvailable(result);
+                    }
+                });
+
+        mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity());
+        setReady(true);
+    }
 
 
     @Override
@@ -64,7 +104,7 @@ public class ATTensorflow extends CordovaPlugin {
             return true;
 
         }else if (action.equals("NoNo")) {
-            callTakePicture();
+            mCameraHandler.takePicture();
             return true;
         } else {
             
@@ -75,156 +115,35 @@ public class ATTensorflow extends CordovaPlugin {
 
 
 
-    public void callTakePicture() {
 
 
 
-        boolean saveAlbumPermission = PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        // CB-10120: The CAMERA permission does not need to be requested unless it is declared
-        // in AndroidManifest.xml. This plugin does not declare it, but others may and so we must
-        // check the package info to determine if the permission is present.
-
-        if (!saveAlbumPermission) {
-            PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        Log.d(Tag,"processing callTakePicture");
-        new Thread(new ClientThread()).start();
-
+    private void setReady(boolean ready) {
+        mReady.set(ready);
     }
 
 
+    public void onImageAvailable(Bitmap bitmdap) {
 
-    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness)
-    {
-        ColorMatrix cm = new ColorMatrix(new float[]
-                {
-                        contrast, 0, 0, 0, brightness,
-                        0, contrast, 0, 0, brightness,
-                        0, 0, contrast, 0, brightness,
-                        0, 0, 0, 1, 0
-                });
+        final Bitmap Out_bitmap = mImagePreprocessor.preprocessImage(bitmdap);
 
-        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+        Log.w(TAG,"getHeight: "+ Out_bitmap.getHeight()+"  , getWidth: "+Out_bitmap.getWidth());
 
-        Canvas canvas = new Canvas(ret);
-
-        Paint paint = new Paint();
-        paint.setColorFilter(new ColorMatrixColorFilter(cm));
-        canvas.drawBitmap(bmp, 0, 0, paint);
-
-        return ret;
-    }
-
-
-    public void processPicture(Bitmap bitmap, int encodingType) {
-        Log.d(Tag,"processing Picture");
-
-        ByteArrayOutputStream jpeg_data = new ByteArrayOutputStream();
-        Bitmap.CompressFormat compressFormat = encodingType == JPEG ?
-                Bitmap.CompressFormat.JPEG :
-                Bitmap.CompressFormat.PNG;
-
-        try {
-            if (bitmap.compress(compressFormat, mQuality, jpeg_data)) {
-                byte[] code = jpeg_data.toByteArray();
-                byte[] output = Base64.encode(code, Base64.NO_WRAP);
-                String js_out = new String(output);
-                Log.d(Tag,"sending Image");
-
-                callbackContext.success(js_out);
-                js_out = null;
-                output = null;
-                code = null;
+        final List<Classifier.Recognition> results = mTensorFlowClassifier.recognizeImage(Out_bitmap);
+        Log.d(TAG, "results: " + results.size());
+        if(results.size() > 0) {
+            for (int i = 0; i < results.size(); i++) {
+                Classifier.Recognition r = results.get(i);
+                Log.w(TAG, r.toString());
+                callbackContext.success(r.toString());
             }
-        } catch (Exception e) {
-            this.failPicture("Error compressing image.");
-        }
-        jpeg_data = null;
-    }
-
-
-
-    public void failPicture(String err) {
-        callbackContext.error(err);
-    }
-
-    class ClientThread implements Runnable {
-        private Socket socket;
-        private PrintWriter out;
-        private BufferedReader in;
-
-
-
-        @Override
-        public void run() {
-
-            try {
-                InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-                long now = System.currentTimeMillis();
-
-                socket = new Socket(serverAddr, SERVERPORT);
-                out= new PrintWriter(new BufferedWriter(
-                        new OutputStreamWriter(socket.getOutputStream())), true);
-
-                BufferedReader in =
-                        new BufferedReader(
-                                new InputStreamReader(socket.getInputStream()));
-
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                Log.d(Tag,"ClientThread Running Image Capture");
-
-                out.println("cd /sdcard/Pictures");
-                //out.println("touch bitmap.loc");
-                sleep(10);
-                out.println("gt_crl_test_sensors.sh ov5670_1080");
-                //printout();
-                out.println("raw2vec bd 1920 1080 ov5670_1080_000000.bin temp.raw");
-                //printout();
-                out.println("raw2bmp temp.raw out.bmp 1920 1080 16 3");
-                //printout();
-                //out.println("cp out.bmp image.bmp");
-                //printout();
-
-                //out.println("rm bitmap.loc");
-
-
-                String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-                String fileName = "/Pictures/out.bmp";
-                File imageFile= new File(storageDir+fileName);
-
-                while (!in.readLine().contains("file temp.raw")){
-
-                }
-                Log.d(Tag,imageFile.getAbsolutePath());
-
-                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                bitmap = Bitmap.createScaledBitmap(bitmap,400,400,false);
-                bitmap = changeBitmapContrastBrightness(bitmap,10f,90f);
-
-                processPicture(bitmap,JPEG);
-
-
-                //out.println("rm out.bmp");
-                //out.println("rm ov5670_1080_000000.bin");
-                //out.println("rm temp.raw");
-                //sleep(1000);
-                bitmap.recycle();
-                out.close();
-                socket.close();
-
-            } catch (UnknownHostException e1) {
-                e1.printStackTrace();
-                Log.e(Tag,"UnKnowHost");
-                callbackContext.error("UnknownHostException");
-            } catch (IOException e1) {
-                //e1.printStackTrace();
-                //Log.e(Tag,"IOException");
-                callbackContext.error("IOException");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        }else{
+            callbackContext.error("No Classifation found");
         }
 
+
+
     }
+
+
 }
