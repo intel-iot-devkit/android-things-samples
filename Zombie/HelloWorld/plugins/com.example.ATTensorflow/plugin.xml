@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.example.ATTensorflow"
+        version="0.1.1">
+
+  <name>ATTensorflow</name>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <asset src="www/ATTensorflow.js" target="js/ATTensorflow.js"/>
+
+  <dependency id="cordova-plugin-compat" version="^1.0.0" />
+
+
+  <js-module src="www/ATTensorflow.js" name="ATTensorflow">
+    <clobbers target="ATTensorflow" />
+  </js-module>
+
+  <platform name="android">
+
+
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    </config-file>
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="ATTensorflow">
+        <param name="android-package" value="com.apray.plugin.ATTensorflow"/>
+      </feature>
+    </config-file>
+
+    <source-file src="src/android/ATTensorflow.java" target-dir="src/com/apray/plugin/"/>
+
+    <source-file src="src/android/ImageClassifierActivity.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
+    <source-file src="src/android/CameraHandler_SIM.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
+    <source-file src="src/android/ImagePreprocessor.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
+
+    <source-file src="src/android/classifier/classifier.java" target-dir="src/com/example/androidthings/imageclassifier/classifier/"/>
+    <source-file src="src/android/classifier/TensorFlowImageClassifier.java" target-dir="src/com/example/androidthings/imageclassifier/classifier/"/>
+    
+
+    <source-file src="src/android/env/ImageUtils.java" target-dir="src/com/example/androidthings/imageclassifier/env"/>
+    <source-file src="src/android/env/Logger.java" target-dir="src/com/example/androidthings/imageclassifier/env/"/>
+
+
+
+
+    <asset src="src/android/assets/imagenet_comp_graph_label_strings.txt" target="imagenet_comp_graph_label_strings.txt"/>
+    <asset src="src/android/assets/LICENSE" target="LICENSE"/>
+    <asset src="src/android/assets/retrained_graph.pb" target="retrained_graph.pb"/>
+    <asset src="src/android/assets/retrained_labels.txt" target="retrained_labels.txt"/>
+    <asset src="src/android/assets/tensorflow_inception_graph.pb" target="tensorflow_inception_graph.pb"/>
+
+
+    <source-file src="src/android/libs/Tensorflow-Android-Inference-alpha-debug.aar" target-dir="libs/"/>
+
+
+  </platform>
+
+</plugin>

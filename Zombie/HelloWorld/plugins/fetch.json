@@ -1,0 +1,34 @@
+{
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "com.example.ATCamara": {
+        "source": {
+            "type": "local",
+            "path": "..\\cordova-plugin-ATCamara"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.example.ATTensorflow": {
+        "source": {
+            "type": "local",
+            "path": "..\\cordova-plugin-ATTensorflow"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
