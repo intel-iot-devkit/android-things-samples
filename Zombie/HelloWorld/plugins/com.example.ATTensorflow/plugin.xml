@@ -36,11 +36,10 @@
 
     <source-file src="src/android/ATTensorflow.java" target-dir="src/com/apray/plugin/"/>
 
-    <source-file src="src/android/ImageClassifierActivity.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
     <source-file src="src/android/CameraHandler_SIM.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
     <source-file src="src/android/ImagePreprocessor.java" target-dir="src/com/example/androidthings/imageclassifier/"/>
 
-    <source-file src="src/android/classifier/classifier.java" target-dir="src/com/example/androidthings/imageclassifier/classifier/"/>
+    <source-file src="src/android/classifier/Classifier.java" target-dir="src/com/example/androidthings/imageclassifier/classifier/"/>
     <source-file src="src/android/classifier/TensorFlowImageClassifier.java" target-dir="src/com/example/androidthings/imageclassifier/classifier/"/>
     
 
@@ -58,7 +57,7 @@
 
 
     <source-file src="src/android/libs/Tensorflow-Android-Inference-alpha-debug.aar" target-dir="libs/"/>
-
+    <framework src="build-extras.gradle" custom="true" type="gradleReference" />
 
   </platform>
 

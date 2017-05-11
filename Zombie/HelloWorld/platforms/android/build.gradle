@@ -88,6 +88,7 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
+apply from: "com.example.ATTensorflow/hellocordova-build-extras.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
@@ -310,15 +311,4 @@ for (def func : cdvPluginPostBuildExtras) {
 //     ext.postBuildExtras = { ... code here ... }
 if (hasProperty('postBuildExtras')) {
     postBuildExtras()
-}
-
-
-repositories {
-    flatDir{
-        dirs 'libs'
-    }
-}
-dependencies {
-    compile(name: 'Tensorflow-Android-Inference-alpha-debug', ext: 'aar')
-    compile 'com.android.support:support-annotations:24.2.0'
 }
