@@ -21,7 +21,7 @@ public class ATmraa extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        int i2cIndex = -1;
+        int i2cIndex = 0;
         tphSensor = new upm_bmp280.BME280(i2cIndex);
 
     }

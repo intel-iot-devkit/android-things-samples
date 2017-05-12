@@ -1,11 +1,3 @@
-repositories {
-    flatDir{
-        dirs 'libs'
-    }
-}
 dependencies {
-    //compile(name: 'mraa', ext: 'aar')
-    //compile(name: 'upm_bmp280', ext: 'aar')
-    //compile 'io.mraa.at.mraa:mraa:1.7.0'
     compile 'io.mraa.at.upm:upm_bmp280:1.2.0'
 }
