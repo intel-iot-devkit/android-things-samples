@@ -20,9 +20,6 @@
 
   <platform name="android">
 
-    <source-file src="src/android/libs/mraa.aar" target-dir="libs/"/>
-    <source-file src="src/android/libs/upm_bmp280.aar" target-dir="libs/"/>
-
     <config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
       <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
