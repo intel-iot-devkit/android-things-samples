@@ -32,6 +32,9 @@ allprojects {
         // maven {
         //    url "http://dl.bintray.com/android-ia/UPM-Test"
         // }
+        maven {
+            url "http://iotdk-ninja.amr.corp.intel.com/repositories"
+        }
         jcenter()
     }
 }
