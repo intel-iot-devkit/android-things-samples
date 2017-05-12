@@ -53,10 +53,15 @@ var app = {
         document.getElementById('clickMe').disabled = true;
         var image = document.getElementById('myImage');
         image.src = "";
-        ATCamara.NoNo("World", success, failure);
+        ATmraa.NoNo("World", success, failure);
     }
 
-    var success = function(imageData) {
+    var success = function(message) {
+         alert(message);
+
+    }
+
+    var PhotoSuccess = function(imageData) {
          var image = document.getElementById('myImage');
          image.src = "data:image/jpeg;base64," + imageData;
          document.getElementById('clickMe').disabled = false;

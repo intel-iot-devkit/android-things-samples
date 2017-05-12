@@ -30,5 +30,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.example.ATmraa": {
+        "source": {
+            "type": "local",
+            "path": "..\\com.example.ATmraa"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

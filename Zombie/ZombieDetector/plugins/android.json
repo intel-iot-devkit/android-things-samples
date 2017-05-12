@@ -15,6 +15,9 @@
         },
         "com.example.ATTensorflow": {
             "PACKAGE_NAME": "com.intel.zombiedetector"
+        },
+        "com.example.ATmraa": {
+            "PACKAGE_NAME": "com.intel.zombiedetector"
         }
     },
     "dependent_plugins": {

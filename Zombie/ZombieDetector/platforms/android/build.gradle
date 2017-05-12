@@ -19,6 +19,7 @@
 
 apply plugin: 'com.android.application'
 
+
 buildscript {
     repositories {
         mavenCentral()
@@ -30,7 +31,7 @@ buildscript {
     // http://tools.android.com/tech-docs/new-build-system/version-compatibility
     // and https://issues.apache.org/jira/browse/CB-8143
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.3.1'
     }
 }
 
@@ -42,9 +43,12 @@ allprojects {
     }
 }
 
+
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.3'
 }
+
 
 // Configuration properties. Set these via environment variables, build-extras.gradle, or gradle.properties.
 // Refer to: http://www.gradle.org/docs/current/userguide/tutorial_this_and_that.html
@@ -89,6 +93,7 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "com.example.ATTensorflow/zombiedetector-build-extras.gradle"
+apply from: "com.example.ATmraa/zombiedetector-build-extras.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
@@ -171,6 +176,9 @@ android {
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
+        jackOptions {
+            enabled true
+        }
     }
 
     lintOptions {
@@ -217,7 +225,6 @@ android {
       }
     }
     */
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
         targetCompatibility JavaVersion.VERSION_1_6
@@ -306,7 +313,6 @@ def addSigningProps(propsFilePath, signingConfig) {
 for (def func : cdvPluginPostBuildExtras) {
     func()
 }
-
 // This can be defined within build-extras.gradle as:
 //     ext.postBuildExtras = { ... code here ... }
 if (hasProperty('postBuildExtras')) {

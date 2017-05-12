@@ -15,6 +15,14 @@ module.exports = [
         "clobbers": [
             "ATTensorflow"
         ]
+    },
+    {
+        "id": "com.example.ATmraa.ATmraa",
+        "file": "plugins/com.example.ATmraa/www/ATmraa.js",
+        "pluginId": "com.example.ATmraa",
+        "clobbers": [
+            "ATmraa"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -23,7 +31,8 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.3.2",
     "cordova-plugin-compat": "1.1.0",
     "com.example.ATCamara": "0.1.0",
-    "com.example.ATTensorflow": "0.1.1"
+    "com.example.ATTensorflow": "0.1.1",
+    "com.example.ATmraa": "0.1.1"
 };
 // BOTTOM OF METADATA
 });
