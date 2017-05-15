@@ -17,12 +17,13 @@
  * under the License.
  */
 
- var pos = 0
+var pos = 0
+var xAngle = 0, yAngle = 0;
 var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-        document.getElementById("clickMe").addEventListener("click", TakePhoto);
+        //document.getElementById("clickMe").addEventListener("click", TakePhoto);
         //ATmraa.RotaryEncoder("", roteryUpdateCuicle , function() {});
     },
 
@@ -32,8 +33,6 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-        //TakePhoto();
-
     },
 
     // Update DOM on a Received Event
@@ -46,8 +45,10 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
+    },
 };
+
+
     var roteryUpdateCuicle = function(POS){
         roteryUpdate(POS);
     }
@@ -58,9 +59,7 @@ var app = {
      }
 
     var TakePhoto = function(){
-        document.getElementById('clickMe').disabled = true;
-        var image = document.getElementById('myImage');
-        image.src = "";
+        var image = document.getElementById('myImage').src = "";
         //ATmraa.BME280("Altitude", success, failure);
         //ATmraa.TMP006("C", success, failure);
         ATCamara.NoNo("",PhotoSuccess,failure);
@@ -68,15 +67,15 @@ var app = {
 
     var success = function(message) {
          alert(message);
-         document.getElementById('clickMe').disabled = false;
+    }
 
+    var TensorflowSuccess = function(Classifcation) {
+        document.getElementById("one").innerHTML = Classifcation;
     }
 
     var PhotoSuccess = function(imageData) {
-         var image = document.getElementById('myImage');
-         image.src = "data:image/jpeg;base64," + imageData;
-         document.getElementById('clickMe').disabled = false;
-         //ATTensorflow.NoNo("",success,failure);
+         document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
+         ATTensorflow.NoNo("",TensorflowSuccess,failure);
     }
 
     var failure = function( message ) {
@@ -86,8 +85,48 @@ var app = {
         }else{
             alert("Error calling ATCamara Plugin");
         }
-        document.getElementById('clickMe').disabled = false;
-
     }
+
+
+var props = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' '),
+    prop,
+    el = document.createElement('div');
+
+for(var i = 0, l = props.length; i < l; i++) {
+    if(typeof el.style[props[i]] !== "undefined") {
+        prop = props[i];
+        break;
+    }
+}
+
+
+$('body').keydown(function(evt) {
+    switch(evt.keyCode) {
+        case 37: // left
+            yAngle -= 90;
+            break;
+
+        case 38: // up
+            xAngle += 90;
+            evt.preventDefault();
+            break;
+
+        case 39: // right
+            yAngle += 90;
+            break;
+
+        case 40: // down
+            xAngle -= 90;
+            evt.preventDefault();
+            break;
+
+        case 13: // enter
+            TakePhoto();
+            evt.preventDefault();
+            break;
+    };
+    document.getElementById('cube').style[prop] = "rotateX("+xAngle+"deg) rotateY("+yAngle+"deg)";
+});
+
 
 app.initialize();

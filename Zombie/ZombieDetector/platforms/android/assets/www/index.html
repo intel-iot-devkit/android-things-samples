@@ -8,24 +8,25 @@
 </head>
 <body class="experiment" style="background-image:url(images/bgimage2padded.png)">
 <div class="wrapper">
-  <div class="one" style="background-color: rgba(255,255,255,1) ;box-shadow: 0 0 0 9px #003c71;"><b><i><br><h1>Zombie Detector</h1><br></i></b>
-  </div>
+    <b><i><br><h1><div class="one"  id="one" style="background-color: rgba(255,255,255,1) ;box-shadow: 0 0 0 9px #003c71;">Zombie Detector (
+  </div></h1><br></i></b>
 
     <div id="experiment">
         <div id="cube">
             <div class="face one">
+                <img id="myImage" alt="camara" height="400" width="400" src="images/at500.png">
             </div>
             <div class="face two">
                <div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="34" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Humidity" data-style="Arch" data-label_color="#FFF"></div>
             </div>
             <div class="face three">
-               <div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="15" data-text="15" data-append="&deg;C" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Temperature" data-style="Arch" data-label_color="#FFF"></div>
+               <div class="GaugeMeter" id="PreviewGaugeMeter_3" data-percent="15" data-text="15" data-append="&deg;C" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Temperature" data-style="Arch" data-label_color="#FFF"></div>
             </div>
             <div class="face four">
-               <div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="22" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="UV Index" data-style="Arch" data-label_color="#FFF"></div>
+               <div class="GaugeMeter" id="PreviewGaugeMeter_4" data-percent="22" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="UV Index" data-style="Arch" data-label_color="#FFF"></div>
             </div>
             <div class="face five">
-               <div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="20" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Oxygen" data-style="Arch" data-label_color="#FFF"></div>
+               <div class="GaugeMeter" id="PreviewGaugeMeter_5" data-percent="20" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Oxygen" data-style="Arch" data-label_color="#FFF"></div>
             </div>
             <div class="face six">
 
@@ -33,11 +34,12 @@
         </div>
     </div>
 </div>
-    <script src="js/jquery-2.1.4.min.js"></script> 
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery.AshAlom.gaugeMeter-2.0.0.min.js"></script>
 <script>
 $(".GaugeMeter").gaugeMeter();
 </script>
-    <script src="js/cube.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>

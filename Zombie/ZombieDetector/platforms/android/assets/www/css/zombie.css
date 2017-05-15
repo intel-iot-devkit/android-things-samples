@@ -7,13 +7,7 @@
   perspective-origin: 50% 200px;
 }
 
-@font-face {
-    font-family:"BloodSuckers";
-    src: url("bloodsuc.ttf") /* TTF file for CSS3 browsers */
-}
-
 h1 {
-    font-family:'BloodSuckers', sans-serif;
     font-size: 100px;
     font-weight:normal;
     text-align: center;
@@ -42,7 +36,7 @@ h1 {
   height: 360px;
   width: 360px;
   padding: 20px;
-  background-color: rgba(0, 113, 197, 0.9);
+  background-color: rgba(0, 113, 197, 1.0);
   font-size: 27px;
   line-height: 1em;
   color: #fff;
