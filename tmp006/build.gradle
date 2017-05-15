@@ -31,5 +31,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':driversupport')
-    compile 'io.mraa.at.upm:upm_tmp006:1.2.0'
+    compile 'io.mraa.at.upm:upm_tmp006:1.+'
 }
