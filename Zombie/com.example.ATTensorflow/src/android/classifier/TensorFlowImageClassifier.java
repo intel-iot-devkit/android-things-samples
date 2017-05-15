@@ -54,10 +54,10 @@ public class TensorFlowImageClassifier implements Classifier {
     private static final String INPUT_NAME = "input:0";
     private static final String OUTPUT_NAME = "output:0";
 
-    private static final String MODEL_FILE = "file:///android_asset/retrained_graph.pb";
+    private static final String MODEL_FILE = "file:///android_asset/www/retrained_graph.pb";
     //private static final String MODEL_FILE = "file:///android_asset/tensorflow_inception_graph.pb";
     private static final String LABEL_FILE =
-            "file:///android_asset/retrained_labels.txt";
+            "file:///android_asset/www/retrained_labels.txt";
 
     //private static final String LABEL_FILE =
     //        "file:///android_asset/imagenet_comp_graph_label_strings.txt";

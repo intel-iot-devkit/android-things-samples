@@ -44,20 +44,21 @@ public class TensorFlowImageClassifier implements Classifier {
     // INPUT_NAME = "Mul:0", and OUTPUT_NAME = "final_result:0".
     // You'll also need to update the MODEL_FILE and LABEL_FILE paths to point to
     // the ones you produced.
+    //https://github.com/tensorflow/tensorflow/issues/2883
 
-    public static final int INPUT_SIZE = 224;
+    public static final int INPUT_SIZE = 299;
 
     // Note: the actual number of classes for Inception is 1001, but the output layer size is 1008.
-    private static final int NUM_CLASSES = 1008;
-    private static final int IMAGE_MEAN = 117;
-    private static final float IMAGE_STD = 1;
-    private static final String INPUT_NAME = "input:0";
-    private static final String OUTPUT_NAME = "output:0";
+    private static final int NUM_CLASSES = 2;
+    private static final int IMAGE_MEAN = 128;
+    private static final float IMAGE_STD = 128;
+    private static final String INPUT_NAME = "Mul:0";
+    private static final String OUTPUT_NAME = "final_result:0";
 
-    private static final String MODEL_FILE = "file:///android_asset/retrained_graph.pb";
+    private static final String MODEL_FILE = "file:///android_asset/www/retrained_graph.pb";
     //private static final String MODEL_FILE = "file:///android_asset/tensorflow_inception_graph.pb";
     private static final String LABEL_FILE =
-            "file:///android_asset/retrained_labels.txt";
+            "file:///android_asset/www/retrained_labels.txt";
 
     //private static final String LABEL_FILE =
     //        "file:///android_asset/imagenet_comp_graph_label_strings.txt";
@@ -113,7 +114,7 @@ public class TensorFlowImageClassifier implements Classifier {
 
         // Read the label names into memory.
         String actualFilename = labelFilename.split("file:///android_asset/")[1];
-
+        Log.i(TAG, "Reading " +actualFilename);
         this.labels = readLabels(assetManager, actualFilename);
         Log.i(TAG, "Read " + labels.size() + ", " + numClasses + " specified");
 

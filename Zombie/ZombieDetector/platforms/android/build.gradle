@@ -180,6 +180,7 @@ android {
             enabled true
         }
     }
+    aaptOptions { noCompress 'pb' }
 
     lintOptions {
       abortOnError false;
@@ -313,6 +314,9 @@ def addSigningProps(propsFilePath, signingConfig) {
 for (def func : cdvPluginPostBuildExtras) {
     func()
 }
+
+
+
 // This can be defined within build-extras.gradle as:
 //     ext.postBuildExtras = { ... code here ... }
 if (hasProperty('postBuildExtras')) {

@@ -20,6 +20,8 @@
 package com.intel.zombiedetector;
 
 import android.os.Bundle;
+import android.view.WindowManager;
+
 import org.apache.cordova.*;
 
 public class MainActivity extends CordovaActivity
@@ -34,6 +36,7 @@ public class MainActivity extends CordovaActivity
         if (extras != null && extras.getBoolean("cdvStartInBackground", false)) {
             moveTaskToBack(true);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Set by <content src="index.html" /> in config.xml
         loadUrl(launchUrl);

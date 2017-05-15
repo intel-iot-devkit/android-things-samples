@@ -16,12 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+ var pos = 0
 var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         document.getElementById("clickMe").addEventListener("click", TakePhoto);
-
+        //ATmraa.RotaryEncoder("", roteryUpdateCuicle , function() {});
     },
 
     // deviceready Event Handler
@@ -46,18 +48,27 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+    var roteryUpdateCuicle = function(POS){
+        roteryUpdate(POS);
+    }
 
-
+    var roteryUpdate = function(POS) {
+        pos = POS;
+        ATmraa.RotaryEncoder("", roteryUpdateCuicle , function() {});
+     }
 
     var TakePhoto = function(){
         document.getElementById('clickMe').disabled = true;
         var image = document.getElementById('myImage');
         image.src = "";
-        ATmraa.NoNo("World", success, failure);
+        //ATmraa.BME280("Altitude", success, failure);
+        //ATmraa.TMP006("C", success, failure);
+        ATCamara.NoNo("",PhotoSuccess,failure);
     }
 
     var success = function(message) {
          alert(message);
+         document.getElementById('clickMe').disabled = false;
 
     }
 
@@ -65,7 +76,7 @@ var app = {
          var image = document.getElementById('myImage');
          image.src = "data:image/jpeg;base64," + imageData;
          document.getElementById('clickMe').disabled = false;
-
+         //ATTensorflow.NoNo("",success,failure);
     }
 
     var failure = function( message ) {
