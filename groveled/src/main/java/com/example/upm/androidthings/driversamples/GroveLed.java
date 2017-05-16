@@ -18,8 +18,11 @@ package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
 import mraa.mraa;
@@ -27,12 +30,20 @@ import mraa.mraa;
 public class GroveLed extends Activity {
     private static final String TAG = "GroveLED";
 
+    private boolean ledStatus;
+    TextView tv;
+    ImageView im_led;
+
     upm_grove.GroveLed led;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_led);
+
+        tv = (TextView)findViewById(R.id.activity_led_status);
+        //im_led = (ImageView) findViewById(R.id.led1);
+
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int gpioIndex = -1;
@@ -63,9 +74,18 @@ public class GroveLed extends Activity {
 
             try {
                 for (int i = 0; i < 10; ++i) {
-                    led.on();
+                    if (led.on() == 0){
+                        ledStatus = true;
+                    }
+                    updateUI(ledStatus);
+                    //led.on();
                     Thread.sleep(1000);
-                    led.off();
+                    //led.off();
+                    if(led.off() == 0){
+                        ledStatus = false;
+                    }
+                    updateUI(ledStatus);
+
                     Thread.sleep(1000);
                 }
 
@@ -78,6 +98,23 @@ public class GroveLed extends Activity {
             }
         }
     };
+    private void updateUI(boolean Status) {
+        if (Build.DEVICE.equals("joule")) {
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Status == true) {
+                        tv.setText("LED Status is On");
+                        Log.d(TAG, "Status on");
+                    } else {
+                        tv.setText("LED Status is Off");
+                        Log.d(TAG, "Status off");
+                    }
+                }//public void run() {
+            });
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
