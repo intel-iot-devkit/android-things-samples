@@ -9,6 +9,7 @@ import org.json.JSONException;
 
 import mraa.mraa;
 
+
 import static java.lang.Thread.sleep;
 
 
@@ -16,20 +17,17 @@ public class ATmraa extends CordovaPlugin {
     private static final String TAG = "ATmraa";
 
     private CallbackContext callbackContext;
-    private CallbackContext RotaryEncodercallbackContext;
     private CallbackContext TMP006callbackContext;
 
     upm_bmp280.BME280 tphSensor;
     upm_tmp006.TMP006 thermopile;
 
-
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        int i2cIndex = 0;
+        int i2cIndex = mraa.getI2cLookup("I2C0");
         tphSensor = new upm_bmp280.BME280(i2cIndex);
         thermopile = new upm_tmp006.TMP006(i2cIndex, (short) 0, 64);
-
     }
 
 
@@ -50,13 +48,13 @@ public class ATmraa extends CordovaPlugin {
             tphSensor.update();
             String RequestValue = data.getString(0);
             if(RequestValue.contains("Temperature")){
-                callbackContext.success(tphSensor.getTemperature() + " C");
+                callbackContext.success(""+tphSensor.getTemperature());
             }else if(RequestValue.contains("Pressure")){
-                callbackContext.success(tphSensor.getPressure() + " Pa");
+                callbackContext.success(""+tphSensor.getPressure());
             }else if(RequestValue.contains("Altitude")){
-                callbackContext.success(tphSensor.getAltitude() + " m");
+                callbackContext.success(""+tphSensor.getAltitude());
             }else if(RequestValue.contains("Humidity")){
-                callbackContext.success(tphSensor.getHumidity() + " %RH");
+                callbackContext.success(""+tphSensor.getHumidity());
             }else {
                 callbackContext.error("Unknow Mode "+RequestValue);
                 return false;
@@ -68,8 +66,6 @@ public class ATmraa extends CordovaPlugin {
             AsyncTask.execute(thermopileTask);
             return true;
         }else if (action.equals("RotaryEncoder")) {
-            RotaryEncodercallbackContext =_callbackContext;
-            AsyncTask.execute(RotaryEncoderTask);
             return true;
         }  else {
 
@@ -100,19 +96,10 @@ public class ATmraa extends CordovaPlugin {
             }
 
             Log.i(TAG,"Temperature: "+ temp + " °C");
-            TMP006callbackContext.success("Temperature: "+ temp + " °C");
+            TMP006callbackContext.success(""+ temp);
             thermopile.setStandby();
         }
     };
 
-    Runnable RotaryEncoderTask = new Runnable() {
-        int pos = 0;
-        @Override
-        public void run() {
-            // Moves the current thread into the background
-            //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            RotaryEncodercallbackContext.success(pos);
-        }
-    };
 
 }

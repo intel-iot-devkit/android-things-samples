@@ -24,7 +24,6 @@ var app = {
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         //document.getElementById("clickMe").addEventListener("click", TakePhoto);
-        //ATmraa.RotaryEncoder("", roteryUpdateCuicle , function() {});
     },
 
     // deviceready Event Handler
@@ -48,16 +47,6 @@ var app = {
     },
 };
 
-
-    var roteryUpdateCuicle = function(POS){
-        roteryUpdate(POS);
-    }
-
-    var roteryUpdate = function(POS) {
-        pos = POS;
-        ATmraa.RotaryEncoder("", roteryUpdateCuicle , function() {});
-     }
-
     var TakePhoto = function(){
         var image = document.getElementById('myImage').src = "";
         //ATmraa.BME280("Altitude", success, failure);
@@ -65,8 +54,45 @@ var app = {
         ATCamara.NoNo("",PhotoSuccess,failure);
     }
 
+     var side = 0;
+
     var success = function(message) {
-         alert(message);
+          value =  parseInt(message);
+         //alert(message);
+         console.log("Side : " +side+"  > "+ value);
+         switch(side){
+             case 0:
+                    //Humidity
+                  $("#PreviewGaugeMeter_2").data("percent",value);
+                  $("#PreviewGaugeMeter_2").empty();
+                  $("#PreviewGaugeMeter_2").gaugeMeter();
+                  //setTimeout(function() { ATmraa.BME280("Humidity", success, failure); }, 5000);
+
+                  break;
+             case 1:
+                //Altitude
+                $("#PreviewGaugeMeter_5").data("percent",Math.abs(value));
+                $("#PreviewGaugeMeter_5").empty();
+                $("#PreviewGaugeMeter_5").gaugeMeter();
+                //setTimeout(function() { ATmraa.BME280("Altitude", success, failure); }, 5000);
+                break;
+             case 2:
+                //Pressure
+                value = value/5000;
+                $("#PreviewGaugeMeter_4").data("percent",value);
+                $("#PreviewGaugeMeter_4").empty();
+                $("#PreviewGaugeMeter_4").gaugeMeter();
+                //setTimeout(function() { ATmraa.BME280("Pressure", success, failure); }, 5000);
+                break;
+             case 3:
+                 //Temperature
+                 //Math.abs(message)
+                  $("#PreviewGaugeMeter_3").data("percent",parseInt(message));
+                  $("#PreviewGaugeMeter_3").empty();
+                  $("#PreviewGaugeMeter_3").gaugeMeter();
+                  //setTimeout(function() { ATmraa.TMP006("C", success, failure); }, 5000);
+                  break;
+         }
     }
 
     var TensorflowSuccess = function(Classifcation) {
@@ -88,6 +114,47 @@ var app = {
     }
 
 
+
+    var RunSensor = function(){
+            if(yAngle == 360 || yAngle == -360){
+                yAngle = 0;
+            }
+            //console.log("yAngle: "+yAngle);
+           // the side we're looking for -3 -2 -1 0 1 2 3
+           side = (yAngle/90) % 4;
+           //console.log(side);
+
+       switch(side) {
+
+        case 0:
+            //Humidity
+            ATmraa.BME280("Humidity", success, failure);
+              side = 0;
+            break;
+        case 1:
+        case -3:
+            //Altitude
+            side = 1;
+            ATmraa.BME280("Altitude", success, failure);
+            break;
+
+        case -2:
+        case 2:
+            side = 2;
+            //Pressure
+            ATmraa.BME280("Pressure", success, failure);
+            break;
+        case -1:
+        case 3:
+            side = 3;
+            //Temperature
+            ATmraa.TMP006("C", success, failure);
+            break;
+
+       }
+    }
+
+
 var props = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' '),
     prop,
     el = document.createElement('div');
@@ -104,24 +171,31 @@ $('body').keydown(function(evt) {
     switch(evt.keyCode) {
         case 37: // left
             yAngle -= 90;
-            break;
-
-        case 38: // up
-            xAngle += 90;
-            evt.preventDefault();
+            RunSensor();
             break;
 
         case 39: // right
             yAngle += 90;
+            RunSensor();
             break;
 
-        case 40: // down
-            xAngle -= 90;
+        case 38: // up
+            xAngle = -90;
+            yAngle = 0;
+            TakePhoto();
             evt.preventDefault();
             break;
 
-        case 13: // enter
-            TakePhoto();
+
+
+        case 40: // down
+            if(xAngle == 0){
+                xAngle = -90;
+                yAngle = 0;
+                TakePhoto();
+            }else{
+                xAngle = 0
+            }
             evt.preventDefault();
             break;
     };
