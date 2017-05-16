@@ -176,11 +176,8 @@ android {
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
-        jackOptions {
-            enabled true
-        }
     }
-    aaptOptions { noCompress 'pb' }
+
 
     lintOptions {
       abortOnError false;

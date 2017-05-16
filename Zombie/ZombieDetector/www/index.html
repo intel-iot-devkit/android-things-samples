@@ -1,49 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Article: https://paulrhayes.com/2009-07/animated-css3-cube-interface-using-3d-transforms/ -->
-    <!-- Demo: https://paulrhayes.com/experiments/cube-3d/ -->
-    <!-- Originally posted: 17th July 2009 -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>3D CSS cube, use arrow keys to rotate &mdash; Paul Hayes</title>
-    <meta name="author" content="Paul Hayes" />
-    <link rel="canonical" href="https://paulrhayes.com/experiments/cube-3d/" />
-    <link rel="stylesheet" href="../experiment-styles.css" />
 
-    <link rel="stylesheet" href="css/experiment.css" />
+    <title>Zombie Detector</title>
+
+    <link rel="stylesheet" href="css/zombie.css" />
 </head>
-<body class="experiment">
-    <div class="wrapper">
-        <p class="learn">
-            This is a demo, <a href="https://paulrhayes.com/2009-07/animated-css3-cube-interface-using-3d-transforms/">learn how it works</a>.
-        </p>
+<body class="experiment" style="background-image:url(images/bgimage2padded.png)">
+<div class="wrapper">
+    <b><i><br><h1><div class="one" style="background-color: rgba(255,255,255,1) ;box-shadow: 0 0 0 9px #003c71;">
+  </div></h1><br></i></b>
 
-<div id="experiment">
-    <div id="cube">
-        <div class="face one">
-            One face
-        </div>
-        <div class="face two">
-            Up, down, left, right
-        </div>
-        <div class="face three">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-        <div class="face four">
-            New forms of navigation are fun.
-        </div>
-        <div class="face five">
-            Rotating 3D cube
-        </div>
-        <div class="face six">
-            <img src="images/sonic.gif" />
+    <div id="experiment">
+        <div id="cube">
+            <div class="face one">
+                <img id="myImage" alt="camara" height="340" width="360" src="images/at500.png">
+                <div id="one" > No Found </div>
+            </div>
+            <div class="face two">
+               <div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="34" data-append="%" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Humidity" data-style="Arch" data-label_color="#FFF"></div>
+            </div>
+            <div class="face three">
+               <div class="GaugeMeter" id="PreviewGaugeMeter_3" data-percent="15" data-text="15" data-append="&deg;C" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Temperature" data-style="Arch" data-label_color="#FFF"></div>
+            </div>
+            <div class="face four">
+               <div class="GaugeMeter" id="PreviewGaugeMeter_4" data-percent="22" data-append="KPa" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Pressure" data-style="Arch" data-label_color="#FFF"></div>
+            </div>
+            <div class="face five">
+               <div class="GaugeMeter" id="PreviewGaugeMeter_5" data-percent="20" data-append="m" data-size="400" data-theme="White" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Altitude" data-style="Arch" data-label_color="#FFF"></div>
+            </div>
+            <div class="face six">
+
+            </div>
         </div>
     </div>
 </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery.AshAlom.gaugeMeter-2.0.0.min.js"></script>
+    <script src="js/index.js"></script>
 
-    </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="js/experiment.js"></script>
+<script>
+$(".GaugeMeter").gaugeMeter();
+</script>
+
 </body>
 </html>

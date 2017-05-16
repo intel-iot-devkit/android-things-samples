@@ -1,5 +1,13 @@
+android {
+	defaultConfig {
+	    jackOptions {
+	        enabled true
+	    }
+	}
+}
+
 dependencies {
     compile 'io.mraa.at.upm:upm_bmp280:1.2.0'
     compile 'io.mraa.at.upm:upm_tmp006:1.2.0'
-
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
 }

@@ -47,8 +47,8 @@ public class CameraHandler_SIM {
     public String baseurl = "http://192.168.1.88:81/";
     public String LoginBits = "&loginuse=admin&loginpas=tmeftw&user=admin&pwd=tmeftw";
 
-    public static final int IMAGE_WIDTH = 224;
-    public static final int IMAGE_HEIGHT = 224;
+    public static final int IMAGE_WIDTH = 299;
+    public static final int IMAGE_HEIGHT = 299;
     private CameraHandler_SIMInterface imageAvailableListener;
 
     public boolean Moveleft = true;

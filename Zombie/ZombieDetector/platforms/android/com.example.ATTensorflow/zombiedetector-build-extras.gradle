@@ -1,3 +1,6 @@
+android {
+    aaptOptions { noCompress 'pb' }
+}
 repositories {
     flatDir{
         dirs 'libs'
