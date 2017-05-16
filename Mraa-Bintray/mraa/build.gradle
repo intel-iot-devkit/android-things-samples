@@ -1,0 +1,128 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
+}
+
+group = 'io.mraa.at'
+version = '1.5.1'
+
+def siteUrl = 'https://github.com/intel-iot-devkit/mraa'
+def gitUrl = 'https://github.com/intel-iot-devkit/mraa.git'
+def libDisc = 'Peripheral Manager MRAA'
+def trackerUrl = 'https://github.com/intel-iot-devkit/mraa/issues'
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 25
+        versionCode 1
+        versionName version
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    testCompile 'junit:junit:4.12'
+    }
+
+
+
+bintray {
+    user = 'androidthings-otc'
+    key = 'e34a4fc7401b50b09431fe20dc946affdaf84e92'
+    publish = true // will stage the file on bintray or publish them to use
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = 'UPM-Test'
+        name = project.name
+        userOrg = 'android-ia'
+        desc = libDisc
+        websiteUrl = siteUrl
+        issueTrackerUrl = trackerUrl
+        vcsUrl = gitUrl
+        licenses = ['MIT']
+        labels = ['aar', 'android', 'example']
+        publicDownloadNumbers = true
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+    }
+
+task findConventions << {
+    println project.getConvention()
+}
+
+
+
+task writeNewPom {
+    pom {
+        project {
+            packaging 'aar'
+            name project.name
+            url siteUrl
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'https://github.com/intel-iot-devkit/mraa/blob/master/COPYING'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("$buildDir/poms/pom-default.xml")
+}
+
+
+bintrayUpload {
+    dependsOn build
+    dependsOn sourcesJar
+    dependsOn writeNewPom
+}
