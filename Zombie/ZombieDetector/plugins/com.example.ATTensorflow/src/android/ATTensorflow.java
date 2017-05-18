@@ -95,15 +95,7 @@ public class ATTensorflow extends CordovaPlugin {
     public boolean execute(String action, JSONArray data, CallbackContext _callbackContext) throws JSONException {
         callbackContext =_callbackContext;
 
-        if (action.equals("greet")) {
-
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            callbackContext.success(message);
-
-            return true;
-
-        }else if (action.equals("NoNo")) {
+        if (action.equals("Classifier")) {
             mCameraHandler.takePicture();
             return true;
         } else {
@@ -135,7 +127,7 @@ public class ATTensorflow extends CordovaPlugin {
             for (int i = 0; i < results.size(); i++) {
                 Classifier.Recognition r = results.get(i);
                 Log.w(TAG, r.toString());
-                callbackContext.success(r.toString());
+                callbackContext.success(r.getTitle()+" ("+(r.getConfidence()*100)+"%)");
             }
         }else{
             callbackContext.error("No Classifation found");

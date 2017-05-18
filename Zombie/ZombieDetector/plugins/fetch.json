@@ -15,6 +15,14 @@
         "is_top_level": false,
         "variables": {}
     },
+    "com.example.ATmraa": {
+        "source": {
+            "type": "local",
+            "path": "..\\com.example.ATmraa"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "com.example.ATCamara": {
         "source": {
             "type": "local",
@@ -27,14 +35,6 @@
         "source": {
             "type": "local",
             "path": "..\\com.example.ATTensorflow"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.example.ATmraa": {
-        "source": {
-            "type": "local",
-            "path": "..\\com.example.ATmraa"
         },
         "is_top_level": true,
         "variables": {}

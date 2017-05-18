@@ -34,16 +34,7 @@ public class ATmraa extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext _callbackContext) throws JSONException {
 
-
-        if (action.equals("greet")) {
-            callbackContext =_callbackContext;
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            callbackContext.success(message);
-
-            return true;
-
-        }else if (action.equals("BME280")) {
+        if (action.equals("BME280")) {
             callbackContext =_callbackContext;
             tphSensor.update();
             String RequestValue = data.getString(0);
@@ -65,9 +56,7 @@ public class ATmraa extends CordovaPlugin {
             TMP006callbackContext =_callbackContext;
             AsyncTask.execute(thermopileTask);
             return true;
-        }else if (action.equals("RotaryEncoder")) {
-            return true;
-        }  else {
+        } else {
 
             return false;
 

@@ -49,9 +49,7 @@ var app = {
 
     var TakePhoto = function(){
         var image = document.getElementById('myImage').src = "";
-        //ATmraa.BME280("Altitude", success, failure);
-        //ATmraa.TMP006("C", success, failure);
-        ATCamara.NoNo("",PhotoSuccess,failure);
+        ATCamara.TakePhoto("",PhotoSuccess,failure);
     }
 
      var side = 0;
@@ -101,7 +99,7 @@ var app = {
 
     var PhotoSuccess = function(imageData) {
          document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
-         ATTensorflow.NoNo("",TensorflowSuccess,failure);
+         ATTensorflow.Classifier("",TensorflowSuccess,failure);
     }
 
     var failure = function( message ) {

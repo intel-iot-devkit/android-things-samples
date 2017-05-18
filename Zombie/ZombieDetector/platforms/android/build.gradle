@@ -92,8 +92,8 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "com.example.ATTensorflow/zombiedetector-build-extras.gradle"
 apply from: "com.example.ATmraa/zombiedetector-build-extras.gradle"
+apply from: "com.example.ATTensorflow/zombiedetector-build-extras.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
