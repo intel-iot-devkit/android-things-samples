@@ -48,8 +48,6 @@
 
 
 
-
-    <asset src="src/android/assets/imagenet_comp_graph_label_strings.txt" target="imagenet_comp_graph_label_strings.txt"/>
     <asset src="src/android/assets/LICENSE" target="LICENSE"/>
     <asset src="src/android/assets/retrained_graph.pb" target="retrained_graph.pb"/>
     <asset src="src/android/assets/retrained_labels.txt" target="retrained_labels.txt"/>
