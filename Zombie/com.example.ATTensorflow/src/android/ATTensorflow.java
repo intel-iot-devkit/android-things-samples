@@ -67,12 +67,7 @@ public class ATTensorflow extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
 
-        //mBackgroundThread = new HandlerThread("BackgroundThread");
-        //mBackgroundThread.start();
-        //mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
-        //mBackgroundHandler.post(mInitializeOnBackground);
         mCameraHandler = new CameraHandler_SIM();
-
         mImagePreprocessor = new ImagePreprocessor(CameraHandler_SIM.IMAGE_WIDTH,
                 CameraHandler_SIM.IMAGE_HEIGHT, TensorFlowImageClassifier.INPUT_SIZE);
 
@@ -86,7 +81,13 @@ public class ATTensorflow extends CordovaPlugin {
                     }
                 });
 
-        mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity());
+        //mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity());
+
+        mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity().getAssets(),
+            "file:///android_asset/www/retrained_graph.pb",
+            "file:///android_asset/www/retrained_labels.txt", 2, 299, 128, 128,
+            "Mul:0", "final_result:0");
+
         setReady(true);
     }
 
@@ -104,10 +105,6 @@ public class ATTensorflow extends CordovaPlugin {
 
         }
     }
-
-
-
-
 
 
     private void setReady(boolean ready) {
