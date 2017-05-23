@@ -1,0 +1,19 @@
+android {
+	defaultConfig {
+	    jackOptions {
+	        enabled true
+	    }
+	}
+	compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+ext.cdvMinSdkVersion = 23
+dependencies {
+    compile 'io.mraa.at.upm:upm_bmp280:+'
+    compile 'io.mraa.at.upm:upm_tmp006:+'
+	compile 'io.mraa.at.upm:upm_grove:+'
+	compile 'io.mraa.at.upm:upm_buzzer:+'
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
+}

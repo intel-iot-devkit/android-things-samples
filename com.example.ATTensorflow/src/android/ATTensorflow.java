@@ -80,15 +80,7 @@ public class ATTensorflow extends CordovaPlugin {
                         onImageAvailable(result);
                     }
                 });
-
-        //mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity());
-
-        mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity().getAssets(),
-            "file:///android_asset/www/retrained_graph.pb",
-            "file:///android_asset/www/retrained_labels.txt", 2, 299, 128, 128,
-            "Mul:0", "final_result:0");
-
-        setReady(true);
+        
     }
 
 
@@ -104,7 +96,34 @@ public class ATTensorflow extends CordovaPlugin {
             if( reader.has("Contrast")) Contrast = (float) reader.getInt("Contrast"); else Contrast = 10f;
             float Brightness;
             if( reader.has("Brightness")) Brightness = (float) reader.getInt("Brightness"); else Brightness = 90f;
+
+            String MODEL_FILE;
+            String LABEL_FILE;
+
+            int NUM_CLASSES;
+            int INPUT_SIZE;
+            int IMAGE_MEAN;
+            int IMAGE_STD;
+
+            String INPUT_NAME;
+            String OUTPUT_NAME;
+
+            if( reader.has("MODEL_FILE")) MODEL_FILE = reader.getString("MODEL_FILE"); else MODEL_FILE = "file:///android_asset/www/retrained_graph.pb";
+            if( reader.has("LABEL_FILE")) LABEL_FILE = reader.getString("LABEL_FILE"); else LABEL_FILE = "file:///android_asset/www/retrained_labels.txt";
+
+            if( reader.has("NUM_CLASSES")) NUM_CLASSES = reader.getInt("NUM_CLASSES"); else NUM_CLASSES = 2;
+            if( reader.has("INPUT_SIZE")) INPUT_SIZE = reader.getInt("INPUT_SIZE"); else INPUT_SIZE = 299;
+            if( reader.has("IMAGE_MEAN")) IMAGE_MEAN = reader.getInt("IMAGE_MEAN"); else IMAGE_MEAN = 128;
+            if( reader.has("IMAGE_STD")) IMAGE_STD = reader.getInt("IMAGE_STD"); else IMAGE_STD = 128;
+
+            if( reader.has("INPUT_NAME")) INPUT_NAME = reader.getString("INPUT_NAME"); else INPUT_NAME = "Mul:0";
+            if( reader.has("OUTPUT_NAME")) OUTPUT_NAME = reader.getString("OUTPUT_NAME"); else OUTPUT_NAME = "final_result:0";
+
+
+            mTensorFlowClassifier = new TensorFlowImageClassifier(ATTensorflow.this.cordova.getActivity().getAssets(),MODEL_FILE,LABEL_FILE, NUM_CLASSES, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD,
+            INPUT_NAME, OUTPUT_NAME);
             mCameraHandler.takePicture(name,Contrast,Brightness);
+            setReady(true);
             return true;
         } else {
             
@@ -128,11 +147,15 @@ public class ATTensorflow extends CordovaPlugin {
         final List<Classifier.Recognition> results = mTensorFlowClassifier.recognizeImage(Out_bitmap);
         Log.d(TAG, "results: " + results.size());
         if(results.size() > 0) {
+            Classifier.Recognition mr = results.get(0);
             for (int i = 0; i < results.size(); i++) {
                 Classifier.Recognition r = results.get(i);
                 Log.w(TAG, r.toString());
-                callbackContext.success(r.getTitle()+" ("+(r.getConfidence()*100)+"%)");
+                if(mr.getConfidence() < r.getConfidence() ) mr = r;
             }
+            callbackContext.success(mr.getTitle()+" ("+(mr.getConfidence()*100)+"%)");
+            Log.d(TAG,mr.getTitle()+" ("+(mr.getConfidence()*100)+"%)");
+
         }else{
             callbackContext.error("No Classifation found");
         }

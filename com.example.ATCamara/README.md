@@ -1,41 +1,41 @@
-# Cordova Hello World Plugin
+# Cordova Intel Joule Camara Plugin
 
-Simple plugin that returns your string prefixed with hello.
-
-Greeting a user with "Hello, world" is something that could be done in JavaScript. This plugin provides a simple example demonstrating how Cordova plugins work.
+Simple plugin that returns jpge form the Intel Joule Camara.
 
 ## Using
 
-Create a new Cordova Project
-
-    $ cordova create hello com.example.helloapp Hello
-    
-Install the plugin
-
-    $ cd hello
-    $ cordova plugin add https://github.com/don/cordova-plugin-hello.git
-    
-
-Edit `www/js/index.js` and add the following code inside `onDeviceReady`
-
 ```js
-    var success = function(message) {
-        alert(message);
+
+    var PhotoSuccess = function(imageData) {
+        document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
     }
 
-    var failure = function() {
-        alert("Error calling Hello Plugin");
+    var failure = function(message) {
+        if(message == "IOException"){
+            console.log("Restart the TN_Shell");
+        }else{
+            console.log("Error calling ATCamara Plugin");
+        }
     }
 
-    hello.greet("World", success, failure);
+   	ATCamara.TakePhoto({Name:"out.bmp",Width:400,Height:400,Contrast:1,Brightness:1},PhotoSuccess,failure);
 ```
 
-Install Android platform
-    cordova platform add android
-    
-Run the code
+### TakePhoto
+Name: Location In /sdcard/Pictures/			
+	defalut: "out.bmp"
 
-    cordova run 
+Width: Resize the retured image to this Width.
+	defalut: 400
+
+Height: Resize the retured image to this Height.
+	defalut: 400
+
+Contrast: sets the image Contrast.
+	defalut: 90
+
+Brightness: sets the image Brightness.
+	defalut: 10
 
 ## More Info
 

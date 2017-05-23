@@ -24,21 +24,21 @@ var app = {
 
     // deviceready Event Handler
     onDeviceReady: function() {
-        ATCamara.TakePhoto({Name:"out.bmp",Width:400,Height:400,Contrast:1,Brightness:1},PhotoSuccess,failure);
+        ATmraa.TMP006({i2cAddress:"I2C2"},TempSuccess,failure);
+        ATmraa.BME280({i2cAddress:"I2C2",RequestSensor:"Pressure"},PressureSuccess,failure);
     },
 };
 
+    var PressureSuccess = function( message ) {
+        console.log(message);
+    }
 
-    var PhotoSuccess = function(imageData) {
-             document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
+
+    var TempSuccess = function( message ) {
+        console.log(message);
     }
 
      var failure = function( message ) {
-            if(message == "IOException"){
-                console.log("Restart the TN_Shell");
-            }else{
-                console.log("Error calling ATCamara Plugin");
-            }
+        console.log(message);
      }
-
 app.initialize();

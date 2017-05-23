@@ -23,24 +23,27 @@ var app = {
     },
 
     // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
+        ATCamara.TakePhoto({Name:"out.bmp",Width:400,Height:400,Contrast:1,Brightness:1},PhotoSuccess,failure);
     },
-
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
 };
 
+
+    var PhotoSuccess = function(imageData) {
+         document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
+         ATTensorflow.Classifier({Name:"out.bmp",Contrast:1,Brightness:1},TensorflowSuccess,failure);
+
+    }
+
+    var TensorflowSuccess = function(Classifcation) {
+            document.getElementById("myText").innerHTML = Classifcation;
+    }
+
+     var failure = function( message ) {
+            if(message == "IOException"){
+                console.log("Restart the TN_Shell");
+            }else{
+                console.log(message);
+            }
+     }
 app.initialize();

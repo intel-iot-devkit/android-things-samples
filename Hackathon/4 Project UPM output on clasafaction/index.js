@@ -25,20 +25,38 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         ATCamara.TakePhoto({Name:"out.bmp",Width:400,Height:400,Contrast:1,Brightness:1},PhotoSuccess,failure);
+    
     },
 };
 
 
     var PhotoSuccess = function(imageData) {
-             document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
+         document.getElementById('myImage').src =  "data:image/jpeg;base64," + imageData;
+         ATTensorflow.Classifier({Name:"out.bmp",Contrast:1,Brightness:1},TensorflowSuccess,failure);
+
+    }
+
+    var TensorflowSuccess = function(Classifcation) {
+        document.getElementById("myText").innerHTML = Classifcation;
+        if(Classifcation.includes("not zombie")){
+            //Not  A Zombie
+            ATmraa.LED({pin:"J6_47",on:true,delay:2000},BUZZERSuccess,failure);
+        }else{
+            //A Zombie!!
+            ATmraa.BUZZER({pin:"PWM_3",note:"FA",delay:500000},BUZZERSuccess,failure);
+        }
+    }
+
+
+    var BUZZERSuccess = function( message ) {
+        console.log(message);
     }
 
      var failure = function( message ) {
             if(message == "IOException"){
                 console.log("Restart the TN_Shell");
             }else{
-                console.log("Error calling ATCamara Plugin");
+                console.log(message);
             }
      }
-
 app.initialize();
