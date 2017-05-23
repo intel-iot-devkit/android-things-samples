@@ -45,7 +45,7 @@ import static android.graphics.ImageFormat.JPEG;
 import static java.lang.Thread.sleep;
 
 import org.apache.cordova.PermissionHelper;
-
+import org.json.JSONObject;
 
 
 public class ATTensorflow extends CordovaPlugin {
@@ -97,7 +97,14 @@ public class ATTensorflow extends CordovaPlugin {
         callbackContext =_callbackContext;
 
         if (action.equals("Classifier")) {
-            mCameraHandler.takePicture();
+            JSONObject reader = new JSONObject(data.getString(0));
+            String name;
+            if( reader.has("Name")) name = reader.getString("Name"); else name = "out.bmp";
+            float Contrast;
+            if( reader.has("Contrast")) Contrast = (float) reader.getInt("Contrast"); else Contrast = 10f;
+            float Brightness;
+            if( reader.has("Brightness")) Brightness = (float) reader.getInt("Brightness"); else Brightness = 90f;
+            mCameraHandler.takePicture(name,Contrast,Brightness);
             return true;
         } else {
             

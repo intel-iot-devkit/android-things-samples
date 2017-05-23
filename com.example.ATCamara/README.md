@@ -30,9 +30,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
     hello.greet("World", success, failure);
 ```
 
-Install iOS or Android platform
-
-    cordova platform add ios
+Install Android platform
     cordova platform add android
     
 Run the code

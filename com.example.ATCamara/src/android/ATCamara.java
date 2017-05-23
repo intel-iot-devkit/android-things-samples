@@ -33,7 +33,7 @@ import static android.graphics.ImageFormat.JPEG;
 import static java.lang.Thread.sleep;
 
 import org.apache.cordova.PermissionHelper;
-
+import org.json.JSONObject;
 
 
 public class ATCamara extends CordovaPlugin {
@@ -48,15 +48,25 @@ public class ATCamara extends CordovaPlugin {
 
 
     protected final static String[] permissions = { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.INTERNET,Manifest.permission.ACCESS_NETWORK_STATE };
-
+    private String name;
+    private int Width;
+    private int Height;
+    private float Contrast;
+    private float Brightness;
 
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext _callbackContext) throws JSONException {
         callbackContext =_callbackContext;
-
         if (action.equals("TakePhoto")) {
-            callTakePicture();
+            JSONObject reader = new JSONObject(data.getString(0));
+            if( reader.has("Name")) name = reader.getString("Name"); else name = "out.bmp";
+            if( reader.has("Width")) Width = reader.getInt("Width"); else Width = 400;
+            if( reader.has("Height")) Height = reader.getInt("Height"); else Height = 400;
+            if( reader.has("Contrast")) Contrast = (float) reader.getInt("Contrast"); else Contrast = 10f;
+            if( reader.has("Brightness")) Brightness = (float) reader.getInt("Brightness"); else Brightness = 90f;
+            Log.d(Tag,"Name:" + name+" Width:"+ Width+" Height:"+Height+" Contrast:" +Contrast+ " Brightness:"+Brightness);
+            cordova.getThreadPool().execute(new ClientThread());
             return true;
         } else {
             
@@ -64,27 +74,6 @@ public class ATCamara extends CordovaPlugin {
 
         }
     }
-
-
-
-    public void callTakePicture() {
-
-
-
-        boolean saveAlbumPermission = PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        // CB-10120: The CAMERA permission does not need to be requested unless it is declared
-        // in AndroidManifest.xml. This plugin does not declare it, but others may and so we must
-        // check the package info to determine if the permission is present.
-
-        if (!saveAlbumPermission) {
-            PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        Log.d(Tag,"processing callTakePicture");
-        new Thread(new ClientThread()).start();
-
-    }
-
-
 
     public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness)
     {
@@ -166,22 +155,14 @@ public class ATCamara extends CordovaPlugin {
                 Log.d(Tag,"ClientThread Running Image Capture");
 
                 out.println("cd /sdcard/Pictures");
-                //out.println("touch bitmap.loc");
                 sleep(10);
                 out.println("gt_crl_test_sensors.sh ov5670_1080");
-                //printout();
                 out.println("raw2vec bd 1920 1080 ov5670_1080_000000.bin temp.raw");
-                //printout();
-                out.println("raw2bmp temp.raw out.bmp 1920 1080 16 3");
-                //printout();
-                //out.println("cp out.bmp image.bmp");
-                //printout();
-
-                //out.println("rm bitmap.loc");
+                out.println("raw2bmp temp.raw "+name+" 1920 1080 16 3");
 
 
                 String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-                String fileName = "/Pictures/out.bmp";
+                String fileName = "/Pictures/"+name;
                 File imageFile= new File(storageDir+fileName);
 
                 while (!in.readLine().contains("file temp.raw")){
@@ -190,30 +171,20 @@ public class ATCamara extends CordovaPlugin {
                 Log.d(Tag,imageFile.getAbsolutePath());
 
                 Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                bitmap = Bitmap.createScaledBitmap(bitmap,400,400,false);
-                bitmap = changeBitmapContrastBrightness(bitmap,10f,90f);
+                bitmap = Bitmap.createScaledBitmap(bitmap,Width,Height,false);
+                bitmap = changeBitmapContrastBrightness(bitmap,Contrast,Brightness);
 
                 processPicture(bitmap,JPEG);
-
-
-                //out.println("rm out.bmp");
-                //out.println("rm ov5670_1080_000000.bin");
-                //out.println("rm temp.raw");
-                //sleep(1000);
                 bitmap.recycle();
                 out.close();
                 socket.close();
 
             } catch (UnknownHostException e1) {
-                e1.printStackTrace();
-                Log.e(Tag,"UnKnowHost");
                 callbackContext.error("UnknownHostException");
             } catch (IOException e1) {
-                //e1.printStackTrace();
-                //Log.e(Tag,"IOException");
                 callbackContext.error("IOException");
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                callbackContext.error("InterruptedException");
             }
 
         }

@@ -52,13 +52,13 @@ public class CameraHandler_SIM {
     public boolean Moveleft = true;
     public int MovePos =0;
     public int Movecount =40;
-    public void takePicture() {
+    public void takePicture(String name,float Contrast,float Brightness) {
         String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = "/Pictures/out.bmp";
+        String fileName = "/Pictures/"+name;
         File imageFile= new File(storageDir+fileName);
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
         bitmap = Bitmap.createScaledBitmap(bitmap,IMAGE_WIDTH,IMAGE_WIDTH,true);
-        bitmap = changeBitmapContrastBrightness(bitmap,10f,90f);
+        bitmap = changeBitmapContrastBrightness(bitmap,Contrast,Brightness);
         imageAvailableListener.onDownloadFinished(bitmap);
         //new loadBitmap().execute(url);
 

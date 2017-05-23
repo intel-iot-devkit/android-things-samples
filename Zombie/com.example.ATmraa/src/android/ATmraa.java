@@ -54,7 +54,7 @@ public class ATmraa extends CordovaPlugin {
             return true;
         }else if (action.equals("TMP006")) {
             TMP006callbackContext =_callbackContext;
-            AsyncTask.execute(thermopileTask);
+            cordova.getThreadPool().execute(thermopileTask);
             return true;
         } else {
 
