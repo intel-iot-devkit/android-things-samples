@@ -18,6 +18,9 @@ included graph is traned to reconize [zombie, not zombie]
     ATTensorflow.Classifier({Name:"out.bmp",Contrast:1,Brightness:1},success,failure);
 ```
 
+### Classifier 
+
+#### Needed
 
 Name: Location In /sdcard/Pictures/ to read image from      
     defalut: "out.bmp"
@@ -27,6 +30,8 @@ Contrast: sets the image Contrast.
 
 Brightness: sets the image Brightness.
     defalut: 10
+
+#### Optional
 
 
 MODEL_FILE: The filepath of the model GraphDef protocol buffer.
