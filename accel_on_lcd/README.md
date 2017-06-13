@@ -6,9 +6,21 @@ The sensor is registered to the Android Things User Sensor manager and then the 
 is used to read the sensor. Gravimetric readings for each (X,Y,Z) axis are then printed on
 an I2C connected LCD display.
 
-The driverlibrary contains the class used to register with the sensor manager.
+The Mma7660AccelerometerDriver Class used to register with the sensor manager.
+
+build.gradle:
+
+   ````
+   dependencies {
+           compile 'io.mraa.at.upm:upm_jhd1313m1:1.+'
+           compile 'io.mraa.at.upm:upm_mma7660:1.+'
+           compile 'io.mraa.at:mraa:1.+'
+           provided 'com.google.android.things:androidthings:0.4-devpreview'
+   }
+   ````
 
 See also the mma7660 and jhd1313m1 examples
+
 
 Pre-Requisites:
 ---------------
@@ -48,8 +60,7 @@ The I2C bus to be used is specified in the strings.xml file (src/res/values dire
 </resources>
 ````
 
-The code will automatically determine the board type being run on (modify BoardDefaults.java
-in the driver library to add another board) and select a string from this file for the I2C bus.
+The code will automatically determine the board type being run on (modify BoardDefaults.java) and select a string from this file for the I2C bus.
 The above example uses I2C6 on the Edison Arduino shield and I2C0 on the Joule Tuchuck
 development board. These strings are programmed into the Peripheral Manager and read from their
 into the UPM library to determine the bus to be used.

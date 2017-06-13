@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.upm.androidthings.driverlibrary;
+package com.example.upm.androidthings.driversamples;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -24,10 +24,10 @@ import com.google.android.things.userdriver.UserSensor;
 import com.google.android.things.userdriver.UserSensorDriver;
 import com.google.android.things.userdriver.UserSensorReading;
 
-import upm_mma7660.MMA7660;
-
 import java.io.IOException;
 import java.util.UUID;
+
+import upm_mma7660.MMA7660;
 
 public class Mma7660AccelerometerDriver implements AutoCloseable {
     private static String TAG = Mma7660AccelerometerDriver.class.getSimpleName();
@@ -95,7 +95,8 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
     }
 
     static UserSensor build(final MMA7660 mma7660) {
-        return UserSensor.builder()
+
+        return new UserSensor.Builder()
                 .setType(Sensor.TYPE_ACCELEROMETER)
                 .setName(DRIVER_NAME)
                 .setVendor(DRIVER_VENDOR)

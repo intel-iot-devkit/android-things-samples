@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.upm.androidthings.driversupport;
+package com.example.upm.androidthings.driversamples;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+
 import mraa.mraa;
 
 public class BoardDefaults {

@@ -18,6 +18,8 @@
 <resources>
     <string name="app_name">Jhd1313m1lcd</string>
 
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
     <string name="Lcd_Edison_Arduino">I2C6</string>
     <string name="Lcd_Edison_Sparkfun">I2C1</string>
     <string name="Lcd_Joule_Tuchuck">I2C0</string>

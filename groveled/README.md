@@ -1,7 +1,25 @@
 Grove led sample for Android Things using UPM
 --------------------------------------------
 
-This example demonstrates a GPIO connection using UPM.
+This example demonstrates a LED connection using UPM.
+
+build.gradle:
+
+   ````
+   dependencies {
+       compile 'io.mraa.at.upm:upm_grove:1.+'
+       compile 'io.mraa.at:mraa:1.+'
+       provided 'com.google.android.things:androidthings:0.4-devpreview'
+   }
+   ````
+Java:
+````
+led = new upm_grove.GroveLed(gpioIndex);
+led.on();
+led.delete();
+````
+
+
 
 Pre-Requisites:
 ---------------

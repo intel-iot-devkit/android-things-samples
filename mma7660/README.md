@@ -5,7 +5,27 @@ This example demonstrates connecting an I2C Accelerometer to Android Things usin
 The sensor is registered to the Android Things User Sensor manager and then the sensor manager
 is used to read the sensor. Gravimetric readings for each (X,Y,Z) axis are printed in the logcat.
 
-The driverlibrary contains the class used to register with the sensor manager.
+build.gradle:
+
+   ````
+   dependencies {
+       compile 'io.mraa.at.upm:upm_mma7660:1.3.0'
+       compile 'io.mraa.at:mraa:1.+'
+       provided 'com.google.android.things:androidthings:0.4-devpreview'
+   }
+   ````
+
+Java:
+````
+mDevice = new MMA7660(i2cIndex);
+mDevice.setModeActive(;
+sample = mDevice.getAcceleration();
+mDevice.delete();
+````
+
+
+
+The Mma7660AccelerometerDriver.java class can be used to register with the sensor manager.
 
 Pre-Requisites:
 ---------------
@@ -45,8 +65,7 @@ The I2C bus to be used is specified in the strings.xml file (src/res/values dire
 </resources>
 ````
 
-The code will automatically determine the board type being run on (modify BoardDefaults.java
-in the driver library to add another board) and select a string from this file for the I2C bus.
+The code will automatically determine the board type being run on (modify BoardDefaults.java) and select a string from this file for the I2C bus.
 The above example uses I2C6 on the Edison Arduino shield and I2C0 on the Joule Tuchuck
 development board. These strings are programmed into the Peripheral Manager and read from their
 into the UPM library to determine the bus to be used.
