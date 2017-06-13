@@ -41,14 +41,13 @@ Importing UPM Android studio projects
    ````
    dependencies {
        compile 'io.mraa.at.upm:upm_jhd1313m1:1.3.0'
-       compile project(':driversupport')
-       provided 'com.google.android.things:androidthings:0.3-devpreview'
+       compile 'io.mraa.at:mraa:1.+'
+       provided 'com.google.android.things:androidthings:0.4-devpreview'
    }
     ````
 
-   This build script pulls in io.mraa.at.upm:upm_jhd1313m1:1.3.0 from jcenter and includes the
-   driverlibrary from this project as well. Driverlibrary includes some common functions as well as
-   an example sensor manager plug-in for the MMA 7660 Accelerometer.
+   This build script pulls in io.mraa.at.upm:upm_jhd1313m from jcenter and includes io.mraa.at.mraa:mraa
+   as well. io.mraa.at.mraa:mraa includes some common functions.
 
 
 PreRequisites
