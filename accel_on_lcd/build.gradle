@@ -46,5 +46,5 @@ dependencies {
     compile 'io.mraa.at.upm:upm_jhd1313m1:1.+'
     compile 'io.mraa.at.upm:upm_mma7660:1.+'
     compile 'io.mraa.at:mraa:1.+'
-    provided 'com.google.android.things:androidthings:0.3-devpreview'
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
 }
