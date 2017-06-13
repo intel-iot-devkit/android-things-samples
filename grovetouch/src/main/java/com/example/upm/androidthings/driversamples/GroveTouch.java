@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.upm.androidthings.driversupport.BoardDefaults;
 import mraa.mraa;
 
 public class GroveTouch extends Activity {

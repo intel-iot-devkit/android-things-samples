@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">grovebuzzer</string>
 
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
     <string name="Buzzer_Edison_Arduino">PWM0</string>
     <string name="Buzzer_Edison_Sparkfun">PWM0</string>
 

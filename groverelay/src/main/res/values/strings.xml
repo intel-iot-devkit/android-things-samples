@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GroveRelay</string>
 
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
     <string name="Relay_Edison_Arduino">IO0</string>
     <string name="Relay_Edison_Sparkfun">GP20</string>
     <string name="Relay_Joule_Tuchuck">J6_1</string>

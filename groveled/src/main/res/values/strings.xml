@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GroveLed</string>
 
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
     <string name="Led_Edison_Arduino">IO13</string>
     <string name="Led_Edison_Sparkfun">GP12</string>
     <string name="Led_Joule_Tuchuck">LEDWIFI</string>

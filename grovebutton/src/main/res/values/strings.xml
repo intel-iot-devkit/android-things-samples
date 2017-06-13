@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GroveButton</string>
 
+    <string name="GPIO_Edison_Arduino">IO0</string>
+
     <string name="Button_Edison_Arduino">IO0</string>
     <string name="Button_Edison_Sparkfun">GP20</string>
 

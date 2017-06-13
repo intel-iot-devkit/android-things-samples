@@ -31,6 +31,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':driversupport')
     compile 'io.mraa.at.upm:upm_ttp223:1.+'
+    compile 'io.mraa.at:mraa:1.+'
+    provided 'com.google.android.things:androidthings:0.3-devpreview'
 }

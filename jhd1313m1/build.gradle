@@ -44,6 +44,6 @@ android {
 
 dependencies {
     compile 'io.mraa.at.upm:upm_jhd1313m1:1.+'
-    compile project(':driversupport')
+    compile 'io.mraa.at:mraa:1.+'
     provided 'com.google.android.things:androidthings:0.3-devpreview'
 }

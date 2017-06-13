@@ -25,8 +25,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.example.upm.androidthings.driverlibrary.Mma7660AccelerometerDriver;
-import com.example.upm.androidthings.driversupport.BoardDefaults;
 import mraa.mraa;
 
 import java.io.IOException;
