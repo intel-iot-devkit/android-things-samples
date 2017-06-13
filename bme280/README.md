@@ -60,6 +60,7 @@ Build and install:
 On Android Studio, select the "bmp280" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](bme280.png)
 
 Changing the I2C bus
 --------------------

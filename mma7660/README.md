@@ -9,7 +9,7 @@ build.gradle:
 
    ````
    dependencies {
-       compile 'io.mraa.at.upm:upm_mma7660:1.3.0'
+       compile 'io.mraa.at.upm:upm_mma7660:1.+'
        compile 'io.mraa.at:mraa:1.+'
        provided 'com.google.android.things:androidthings:0.4-devpreview'
    }
@@ -50,6 +50,7 @@ Build and install:
 On Android Studio, select the "mma7660" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](mma7660.png)
 
 Changing the I2C bus
 --------------------

@@ -46,6 +46,7 @@ Build and install:
 On Android Studio, select the "accel_on_lcd" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](accel_on_lcd.png)
 
 Changing the I2C bus
 --------------------

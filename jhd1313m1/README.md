@@ -45,6 +45,8 @@ Build and install:
 On Android Studio, select the "jhd1313m1" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](jhd1313m1.png)
+
 
 Changing the I2C bus
 --------------------

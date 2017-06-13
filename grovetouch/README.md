@@ -44,6 +44,7 @@ Build and install:
 On Android Studio, select the "grovetouch" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](grovetouchSensor.png)
 
 Changing the GPIO pin
 ---------------------

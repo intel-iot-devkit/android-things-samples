@@ -45,6 +45,9 @@ On Android Studio, select the "grovebuzzer" module in select box by the "Run" bu
 and then click on the "Run" button.
 
 
+![Schematics for Intel Edison](grovebuzzer.png)
+
+
 Changing the PWM pin
 --------------------
 This example uses a pwm (digital output) to buzz an buzzer. The PWM could be connected

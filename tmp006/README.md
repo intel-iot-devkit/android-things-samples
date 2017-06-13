@@ -44,6 +44,7 @@ Build and install:
 On Android Studio, select the "tmp006" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](tmp006.png)
 
 Changing the I2C bus
 --------------------

@@ -46,6 +46,8 @@ Build and install:
 On Android Studio, select the "groverelay" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](groverelay.png)
+
 
 Changing the GPIO pin
 ---------------------

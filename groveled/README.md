@@ -43,6 +43,7 @@ Build and install:
 On Android Studio, select the "groveled" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](groveled.png)
 
 Changing the GPIO pin
 ---------------------

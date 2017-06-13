@@ -42,6 +42,7 @@ Build and install:
 On Android Studio, select the "grovebutton" module in select box by the "Run" button
 and then click on the "Run" button.
 
+![Schematics for Intel Edison](grovebutton.png)
 
 Changing the GPIO pin
 ---------------------
