@@ -15,6 +15,7 @@
  */
 
 include ':accel_on_lcd'
+include ':ads1015'
 include ':bme280'
 include ':tmp006'
 include ':driverlibrary'
