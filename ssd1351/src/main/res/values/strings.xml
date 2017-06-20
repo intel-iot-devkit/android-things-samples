@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SSD1351</string>
+
+    <string name="Display_OC_Edison_Arduino">IO0</string>
+    <string name="Display_DC_Edison_Arduino">IO1</string>
+    <string name="Display_RESET_Edison_Arduino">IO2</string>
+
+    <string name="Display_OC_Edison_Sparkfun">GP20</string>
+    <string name="Display_DC_Edison_Sparkfun">GP19</string>
+    <string name="Display_RESET_Edison_Sparkfun">GP14</string>
+
+    <string name="Display_OC_Joule_Tuchuck">J7_64</string>
+    <string name="Display_DC_Joule_Tuchuck">J6_47</string>
+    <string name="Display_RESET_Joule_Tuchuck">J6_49</string>
+</resources>
