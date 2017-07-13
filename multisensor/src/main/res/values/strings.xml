@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">MultiSensor</string>
+
+    <string name="Tmp_Edison_Arduino">I2C6</string>
+    <string name="Tmp_Edison_Sparkfun">I2C1</string>
+    <string name="Tmp_Joule_Tuchuck">I2C0</string>
+
+    <string name="Lcd_Edison_Arduino">I2C6</string>
+    <string name="Lcd_Edison_Sparkfun">I2C1</string>
+    <string name="Lcd_Joule_Tuchuck">I2C0</string>
+
+    <string name="LedRed_Edison_Arduino">IO13</string>
+    <string name="LedRed_Edison_Sparkfun">GP12</string>
+    <string name="LedRed_Joule_Tuchuck">J6_22</string>
+
+    <string name="Button_Edison_Arduino">IO0</string>
+    <string name="Button_Edison_Sparkfun">GP20</string>
+    <string name="Button_Joule_Tuchuck">J7_68</string>
+
+    <string name="LedBlue_Edison_Arduino">IO13</string>
+    <string name="LedBlue_Edison_Sparkfun">GP12</string>
+    <string name="LedBlue_Joule_Tuchuck">J6_1</string>
+
+    <string name="Touch_Edison_Arduino">IO0</string>
+    <string name="Touch_Edison_Sparkfun">GP20</string>
+    <string name="Touch_Joule_Tuchuck">J7_64</string>
+
+    <string name="LedGreen_Edison_Arduino">IO13</string>
+    <string name="LedGreen_Edison_Sparkfun">GP12</string>
+    <string name="LedGreen_Joule_Tuchuck">J7_58</string>
+
+</resources>
