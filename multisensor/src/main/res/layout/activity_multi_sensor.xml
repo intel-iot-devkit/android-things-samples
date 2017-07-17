@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.upm.androidthings.driversamples.MultiSensorActivity">
+
+    <TextView
+        android:id="@+id/activity_Temp_Values"
+        android:layout_width="129dp"
+        android:layout_height="39dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="94dp"
+        android:layout_toStartOf="@+id/imageView3"
+        android:gravity="center"
+        android:text="Hello World!"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="28dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="58dp"
+        android:layout_height="53dp"
+        android:src="@drawable/green_off"
+        tools:layout_editor_absoluteY="107dp"
+        tools:layout_editor_absoluteX="39dp"
+        android:layout_marginTop="150dp"
+        android:layout_below="@+id/activity_Temp_Values"
+        android:layout_toStartOf="@+id/imageView2"
+        android:layout_marginEnd="29dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:src="@drawable/red_off"
+        tools:layout_editor_absoluteX="170dp"
+        tools:layout_editor_absoluteY="107dp"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="56dp"
+        android:layout_height="47dp"
+        android:src="@drawable/blue_off"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="107dp"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_marginStart="29dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+
+        android:text="Touch"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignStart="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignStart="@+id/imageView2"
+        android:text="Temp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignStart="@+id/imageView3"
+        android:text="ButtonLed"
+        android:layout_below="@+id/imageView3" />
+
+</RelativeLayout>
