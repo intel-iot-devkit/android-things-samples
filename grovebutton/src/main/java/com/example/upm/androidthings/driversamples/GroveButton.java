@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
 import mraa.mraa;
@@ -28,6 +29,7 @@ public class GroveButton extends Activity {
     private static final String TAG = "GroveButtonActivity";
 
     upm_grove.GroveButton button;
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class GroveButton extends Activity {
         setContentView(R.layout.activity_grove_button);
 
         int gpioIndex = -1;
+        tv = (TextView)findViewById(R.id.text_value);
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
 
         switch (bd.getBoardVariant()) {
@@ -62,10 +65,10 @@ public class GroveButton extends Activity {
             // Moves the current thread into the background
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
+            int i = 1; // iteration counter to defeat the chatty detector in Log.i
             try {
-
                 while (true) {
-                    Log.i(TAG, button.name() + " value is " + button.value());
+                    updateUI(i++, button.value());
                     Thread.sleep(1000);
                 }
 
@@ -77,6 +80,17 @@ public class GroveButton extends Activity {
             }
         }
     };
+
+    private void updateUI(int i, int bv) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText(button.name() + " value is " + bv);
+                Log.i(TAG, "iteration: " + i + ", " + button.name() + " value is " + bv);
+            }
+        });
+    }
+
 
     @Override
     protected void onDestroy() {
