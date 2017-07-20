@@ -18,18 +18,20 @@ package com.example.upm.androidthings.driversamples;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driverlibrary.Mma7660AccelerometerDriver;
 import com.example.upm.androidthings.driversupport.BoardDefaults;
-import mraa.mraa;
 
 import java.io.IOException;
+
+import mraa.mraa;
 
 /**
  * AccelerometerActivity is a sample activity that uses an Accelerometer driver to
@@ -38,12 +40,18 @@ import java.io.IOException;
 public class AccelerometerActivity extends Activity implements SensorEventListener {
     private static final String TAG = AccelerometerActivity.class.getSimpleName();
 
+    TextView tv, tv1, tv2;
     private Mma7660AccelerometerDriver mAccelerometerDriver;
     private SensorManager mSensorManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_accelerometer);
+        tv = (TextView) findViewById(R.id.text_value);
+        tv1 = (TextView) findViewById(R.id.textView);
+        tv2 = (TextView) findViewById(R.id.textView2);
+
         Log.i(TAG, "Accelerometer demo created");
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
@@ -102,12 +110,25 @@ public class AccelerometerActivity extends Activity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.i(TAG, "Accelerometer event: " +
-                event.values[0] + ", " + event.values[1] + ", " + event.values[2]);
+        updateUI(event.values);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.i(TAG, "Accelerometer accuracy changed: " + accuracy);
+    }
+
+    private void updateUI(float[] values) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText("event.Values[0]     " + values[0]);
+                tv1.setText("event.Values[1]     " + values[1]);
+                tv2.setText("event.Values[2]     " + values[2]);
+
+                Log.i(TAG, "Accelerometer event: " +
+                        values[0] + ", " + values[1] + ", " + values[2]);
+            }
+        });
     }
 }

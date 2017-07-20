@@ -1,8 +1,7 @@
-ads1015 I2C connected Analog to Digital converter sample for Android Things using UPM
--------------------------------------------------------------------------------------
+BME280 I2C connected Digital Humidity, Pressure and Temperature sensor sample for Android Things using UPM
+----------------------------------------------------------------------------------------------------------
 
-This example demonstrates using the inbuilt ADC on Joule shield which is an I2C ADC with Android Things using UPM.
-The output of the ADC readings are stored in the device path /storage/emulated/0/filename.txt.
+This example demonstrates connecting an I2C Atmospheric pressure sensor to Android Things using UPM.
 
 Pre-Requisites:
 ---------------
@@ -17,14 +16,14 @@ You will need:
 
 1. Android Things compatible board.
 2. Grove header or Breakout board.
-3. A ADS1015 i2c ADC (it is inbuilt on the Joule shield).
-4. Sdcard.
+3. Joule shield.
+4. A BME280 Atmospheric pressure sensor.
 
 
 Build and install:
 ------------------
 
-On Android Studio, select the "ads1015" module in select box by the "Run" button
+On Android Studio, select the "bme280" module in select box by the "Run" button
 and then click on the "Run" button.
 
 
@@ -36,11 +35,11 @@ The I2C bus to be used is specified in the strings.xml file (src/res/values dire
 
 ````
 <resources>
-    <string name="app_name">ADS1015</string>
+    <string name="app_name">BME280</string>
 
-    <string name="ADC_Edison_Arduino">I2C6</string>
-    <string name="ADC_Edison_Sparkfun">I2C1</string>
-    <string name="ADC_Joule_Tuchuck">I2C0</string>
+    <string name="Bme_Edison_Arduino">I2C6</string>
+    <string name="Bme_Edison_Sparkfun">I2C1</string>
+    <string name="Bme_Joule_Tuchuck">I2C0</string>
 </resources>
 ````
 

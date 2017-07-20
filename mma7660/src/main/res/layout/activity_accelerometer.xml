@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_accelerometer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.upm.androidthings.driversamples.AccelerometerActivity">
+
+    <TextView
+        android:id="@+id/text_value"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="23dp"
+        android:text="Hello World!" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/text_value"
+        android:layout_alignStart="@+id/text_value"
+        android:layout_below="@+id/text_value"
+        android:layout_marginTop="64dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="72dp"
+        android:text="TextView" />
+</RelativeLayout>

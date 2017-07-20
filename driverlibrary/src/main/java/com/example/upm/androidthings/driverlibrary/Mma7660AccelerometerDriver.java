@@ -24,10 +24,10 @@ import com.google.android.things.userdriver.UserSensor;
 import com.google.android.things.userdriver.UserSensorDriver;
 import com.google.android.things.userdriver.UserSensorReading;
 
-import upm_mma7660.MMA7660;
-
 import java.io.IOException;
 import java.util.UUID;
+
+import upm_mma7660.MMA7660;
 
 public class Mma7660AccelerometerDriver implements AutoCloseable {
     private static String TAG = Mma7660AccelerometerDriver.class.getSimpleName();
@@ -35,9 +35,9 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
     private static String DRIVER_VENDOR = "Seeed";
     private static float DRIVER_MAX_RANGE = 1.5f * SensorManager.GRAVITY_EARTH;
     private static float DRIVER_RESOLUTION = DRIVER_MAX_RANGE / 32.f; // 6bit signed
-    private static float DRIVER_POWER =  294.f / 1000.f;
-    private static int DRIVER_MIN_DELAY_US = Math.round(1000000.f/120.f);
-    private static int DRIVER_MAX_DELAY_US = Math.round(1000000.f/1.f);
+    private static float DRIVER_POWER = 294.f / 1000.f;
+    private static int DRIVER_MIN_DELAY_US = Math.round(1000000.f / 120.f);
+    private static int DRIVER_MAX_DELAY_US = Math.round(1000000.f / 1.f);
     private static int DRIVER_VERSION = 1;
     private static String DRIVER_REQUIRED_PERMISSION = "";
     private MMA7660 mDevice;
@@ -46,6 +46,7 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
     /**
      * Create a new framework accelerometer driver connected to the given I2C bus.
      * The driver emits {@link android.hardware.Sensor} with acceleration data when registered.
+     *
      * @param bus
      * @throws IOException
      * @see #register()
@@ -54,8 +55,46 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
         mDevice = new MMA7660(bus);
     }
 
+    static UserSensor build(final MMA7660 mma7660) {
+        return new UserSensor.Builder()
+                .setType(Sensor.TYPE_ACCELEROMETER)
+                .setName(DRIVER_NAME)
+                .setVendor(DRIVER_VENDOR)
+                .setVersion(DRIVER_VERSION)
+                .setMaxRange(DRIVER_MAX_RANGE)
+                .setResolution(DRIVER_RESOLUTION)
+                .setPower(DRIVER_POWER)
+                .setMinDelay(DRIVER_MIN_DELAY_US)
+                .setRequiredPermission(DRIVER_REQUIRED_PERMISSION)
+                .setMaxDelay(DRIVER_MAX_DELAY_US)
+                .setUuid(UUID.randomUUID())
+                .setDriver(new UserSensorDriver() {
+                    @Override
+                    public UserSensorReading read() throws IOException {
+                        float[] sample = mma7660.getAcceleration();
+                        for (int i = 0; i < sample.length; i++) {
+                            sample[i] = sample[i] * SensorManager.GRAVITY_EARTH;
+                        }
+                        return new UserSensorReading(
+                                sample,
+                                SensorManager.SENSOR_STATUS_ACCURACY_HIGH); // 120Hz
+                    }
+
+                    @Override
+                    public void setEnabled(boolean enabled) throws IOException {
+                        if (enabled) {
+                            mma7660.setModeActive();
+                        } else {
+                            mma7660.setModeStandby();
+                        }
+                    }
+                })
+                .build();
+    }
+
     /**
      * Close the driver and the underlying device.
+     *
      * @throws IOException
      */
     @Override
@@ -72,6 +111,7 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
 
     /**
      * Register the driver in the framework.
+     *
      * @see #unregister()
      */
     public void register() {
@@ -92,42 +132,5 @@ public class Mma7660AccelerometerDriver implements AutoCloseable {
             UserDriverManager.getManager().unregisterSensor(mUserSensor);
             mUserSensor = null;
         }
-    }
-
-    static UserSensor build(final MMA7660 mma7660) {
-        return UserSensor.builder()
-                .setType(Sensor.TYPE_ACCELEROMETER)
-                .setName(DRIVER_NAME)
-                .setVendor(DRIVER_VENDOR)
-                .setVersion(DRIVER_VERSION)
-                .setMaxRange(DRIVER_MAX_RANGE)
-                .setResolution(DRIVER_RESOLUTION)
-                .setPower(DRIVER_POWER)
-                .setMinDelay(DRIVER_MIN_DELAY_US)
-                .setRequiredPermission(DRIVER_REQUIRED_PERMISSION)
-                .setMaxDelay(DRIVER_MAX_DELAY_US)
-                .setUuid(UUID.randomUUID())
-                .setDriver(new UserSensorDriver() {
-                    @Override
-                    public UserSensorReading read() throws IOException {
-                        float[] sample = mma7660.getAcceleration();
-                        for (int i=0; i<sample.length; i++) {
-                            sample[i] = sample[i] * SensorManager.GRAVITY_EARTH;
-                        }
-                        return new UserSensorReading(
-                                sample,
-                                SensorManager.SENSOR_STATUS_ACCURACY_HIGH); // 120Hz
-                    }
-
-                    @Override
-                    public void setEnabled(boolean enabled) throws IOException {
-                        if (enabled) {
-                            mma7660.setModeActive();
-                        } else {
-                            mma7660.setModeStandby();
-                        }
-                    }
-                })
-                .build();
     }
 }

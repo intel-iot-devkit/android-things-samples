@@ -23,6 +23,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
+
 import mraa.mraa;
 
 public class GroveButton extends Activity {
@@ -30,6 +31,26 @@ public class GroveButton extends Activity {
 
     upm_grove.GroveButton button;
     TextView tv;
+    Runnable buttonTask = new Runnable() {
+
+        @Override
+        public void run() {
+            // Moves the current thread into the background
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            int i = 1; // iteration counter to defeat the chatty detector in Log.i
+            try {
+                while (true) {
+                    updateUI(i++, button.value());
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                button.delete();
+                GroveButton.this.finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +58,7 @@ public class GroveButton extends Activity {
         setContentView(R.layout.activity_grove_button);
 
         int gpioIndex = -1;
-        tv = (TextView)findViewById(R.id.text_value);
+        tv = (TextView) findViewById(R.id.text_value);
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
 
         switch (bd.getBoardVariant()) {
@@ -58,29 +79,6 @@ public class GroveButton extends Activity {
         AsyncTask.execute(buttonTask);
     }
 
-    Runnable buttonTask = new Runnable() {
-
-        @Override
-        public void run() {
-            // Moves the current thread into the background
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-            int i = 1; // iteration counter to defeat the chatty detector in Log.i
-            try {
-                while (true) {
-                    updateUI(i++, button.value());
-                    Thread.sleep(1000);
-                }
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            } finally {
-                button.delete();
-                GroveButton.this.finish();
-            }
-        }
-    };
-
     private void updateUI(int i, int bv) {
         this.runOnUiThread(new Runnable() {
             @Override
@@ -90,7 +88,6 @@ public class GroveButton extends Activity {
             }
         });
     }
-
 
     @Override
     protected void onDestroy() {
