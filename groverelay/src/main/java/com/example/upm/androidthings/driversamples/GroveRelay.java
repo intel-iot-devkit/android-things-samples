@@ -20,20 +20,50 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
+
 import mraa.mraa;
 
 public class GroveRelay extends Activity {
-
     private static final String TAG = "GroveRelayActivity";
 
     upm_grove.GroveRelay relay;
+    TextView tv;
+    Runnable relayTask = new Runnable() {
+
+        @Override
+        public void run() {
+            // Moves the current thread into the background
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            try {
+                for (int i = 0; i < 6; i++) {
+                    relay.on();
+                    if (relay.isOn())
+                        updateUI(i, "Relay is on");
+                    Thread.sleep(1000);
+
+                    relay.off();
+                    if (relay.isOff())
+                        updateUI(i, "Relay is off");
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                relay.off();
+                relay.delete();
+                GroveRelay.this.finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_relay);
+        tv = (TextView) findViewById(R.id.text_value);
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int gpioIndex = -1;
@@ -54,39 +84,17 @@ public class GroveRelay extends Activity {
 
         relay = new upm_grove.GroveRelay(gpioIndex);
         AsyncTask.execute(relayTask);
-
     }
 
-    Runnable relayTask = new Runnable() {
-
-        @Override
-        public void run() {
-            // Moves the current thread into the background
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-            try {
-                for (int i = 0; i < 6; i++) {
-                    relay.on();
-                    if (relay.isOn())
-                        Log.i(TAG, "Relay is on");
-                    Thread.sleep(1000);
-
-                    relay.off();
-                    if (relay.isOff())
-                        Log.i(TAG, "Relay is off");
-                    Thread.sleep(1000);
-                }
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            } finally {
-                relay.off();
-                relay.delete();
-                GroveRelay.this.finish();
-
+    private void updateUI(int i, String s) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText(s);
+                Log.i(TAG, "iteration: " + i + ", " + s);
             }
-        }
-    };
+        });
+    }
 
     @Override
     protected void onDestroy() {

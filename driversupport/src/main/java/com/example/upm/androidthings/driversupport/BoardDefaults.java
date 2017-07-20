@@ -19,6 +19,7 @@ package com.example.upm.androidthings.driversupport;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+
 import mraa.mraa;
 
 public class BoardDefaults {
@@ -61,7 +62,6 @@ public class BoardDefaults {
 
         } else if (sBoardVariant.equals(DEVICE_JOULE)) {
             sBoardVariant = DEVICE_JOULE_TUCHUCK;
-
         } else {
             sBoardVariant = DEVICE_NOT_KNOWN;
         }

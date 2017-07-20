@@ -21,30 +21,32 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
 
 import mraa.mraa;
 
 /**
-  * Example of using Grove Jhd1313m1 LCD.
-  *
-  * This activity initializes the LCD and displays RGB color combination with text.
-  *
-  */
+ * Example of using Grove Jhd1313m1 LCD.
+ * <p>
+ * This activity initializes the LCD and displays RGB color combination with text.
+ */
 
 public class JhdActivity extends Activity {
     private static final String TAG = "JhdActivity";
 
+    TextView tv;
     private upm_jhd1313m1.Jhd1313m1 lcd;
     private HandlerThread mDisplayThread;
-
     private Runnable mDisplayLoop = this::displayOnLcd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_jhd);
         Log.d(TAG, "Starting JhdActivity");
+        tv = (TextView) findViewById(R.id.text_value);
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int i2cIndex = -1;
@@ -83,7 +85,7 @@ public class JhdActivity extends Activity {
     }
 
     private void displayOnLcd() {
-        if (lcd != null ) {
+        if (lcd != null) {
             lcd.clear();
 
             int ndx = 0;
@@ -96,7 +98,7 @@ public class JhdActivity extends Activity {
                     {0x22, 0x00, 0x66},   // violet
                     {0x33, 0x00, 0x44}};  // darker violet
 
-            while(true) {
+            while (true) {
                 try {
                     // Alternate rows on the LCD
                     lcd.setCursor(ndx % 2, 0);
@@ -110,18 +112,28 @@ public class JhdActivity extends Activity {
                     lcd.write("Hello World " + ndx);
 
                     // Echo via printf
-                    Log.d(TAG, "Hello World" + ndx++);
-                    Log.d(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
+                    updateUI(ndx++);
+                    //Log.d(TAG, String.format("rgb: 0x%02x%02x%02x", r, g, b));
 
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                } finally{
+                } finally {
                     mDisplayThread.quitSafely();
                 }
             }
-        } else{
+        } else {
             JhdActivity.this.finish();
         }
+    }
+
+    private void updateUI(int ndx) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText("Hello World" + "     " + ndx);
+                Log.i(TAG, "iteration: " + ndx + ", " + "Hello World");
+            }
+        });
     }
 }

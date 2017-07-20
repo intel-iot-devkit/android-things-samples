@@ -20,20 +20,47 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.upm.androidthings.driversupport.BoardDefaults;
+
 import mraa.mraa;
 
 public class GroveTouch extends Activity {
-
     private static final String TAG = "GroveTouchActivity";
 
     upm_ttp223.TTP223 touch;
+    TextView tv;
+    Runnable touchSensorTask = new Runnable() {
+
+        @Override
+        public void run() {
+            // Moves the current thread into the background
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            int i = 1; // iteration counter to defeat the chatty detector in Log.i
+            try {
+                while (true) {
+                    if (touch.isPressed())
+                        updateUI(i++, " is pressed");
+                    else
+                        updateUI(i++, " is not pressed");
+
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                touch.delete();
+                GroveTouch.this.finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grove_touch);
+        tv = (TextView) findViewById(R.id.text_value);
 
         BoardDefaults bd = new BoardDefaults(this.getApplicationContext());
         int gpioIndex = -1;
@@ -56,31 +83,15 @@ public class GroveTouch extends Activity {
         AsyncTask.execute(touchSensorTask);
     }
 
-    Runnable touchSensorTask = new Runnable() {
-
-        @Override
-        public void run() {
-            // Moves the current thread into the background
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-            try {
-                while (true) {
-                    if (touch.isPressed())
-                        Log.i(TAG, touch.name() + " is pressed");
-                    else
-                        Log.i(TAG, touch.name() + " is not pressed");
-
-                    Thread.sleep(1000);
-                }
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            } finally {
-                touch.delete();
-                GroveTouch.this.finish();
+    private void updateUI(int i, String s) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv.setText(touch.name() + " " + s);
+                Log.i(TAG, "iteration: " + i + ", " + touch.name() + s);
             }
-        }
-    };
+        });
+    }
 
     @Override
     protected void onDestroy() {

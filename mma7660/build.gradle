@@ -36,7 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -45,5 +45,5 @@ android {
 dependencies {
     compile project(':driverlibrary')
     compile project(':driversupport')
-    provided 'com.google.android.things:androidthings:0.3-devpreview'
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
 }
