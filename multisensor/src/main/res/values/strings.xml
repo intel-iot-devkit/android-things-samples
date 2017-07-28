@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2017 Intel Corporation.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">MultiSensor</string>
+
+    <string name="I2C_Edison_Arduino">I2C6</string>
+    <string name="I2C_Edison_Sparkfun">I2C1</string>
+    <string name="I2C_Joule_Tuchuck">I2C0</string>
+
+    <string name="LedRed_Edison_Arduino">IO13</string>
+    <string name="LedRed_Edison_Sparkfun">GP12</string>
+    <string name="LedRed_Joule_Tuchuck">J6_22</string>
+
+    <string name="Button_Edison_Arduino">IO0</string>
+    <string name="Button_Edison_Sparkfun">GP20</string>
+    <string name="Button_Joule_Tuchuck">J7_68</string>
+
+    <string name="LedBlue_Edison_Arduino">IO13</string>
+    <string name="LedBlue_Edison_Sparkfun">GP12</string>
+    <string name="LedBlue_Joule_Tuchuck">J6_1</string>
+
+    <string name="Touch_Edison_Arduino">IO0</string>
+    <string name="Touch_Edison_Sparkfun">GP20</string>
+    <string name="Touch_Joule_Tuchuck">J7_64</string>
+
+    <string name="LedGreen_Edison_Arduino">IO13</string>
+    <string name="LedGreen_Edison_Sparkfun">GP12</string>
+    <string name="LedGreen_Joule_Tuchuck">J7_58</string>
+
+</resources>
