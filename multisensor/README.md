@@ -35,9 +35,9 @@ and then click on the "Run" button.
 Changing the GPIO and I2C bus
 -----------------------------
 This example uses a GPIO (digital input) to read the state of a touch sensor, a GPIO (digital input)
- to read the state of a button ,3 GPIO (digital output) to light LEDs (Red, Green and Blue).
-An I2C temperature sensor to get the ambient temperature and an I2c based actuator 
-(jhd1313m1 LCD display) to display the temperature values.connected via the shield to the sensors.
+to read the state of a button, 3 GPIOs (digital output) to light LEDs (Red, Green and Blue).
+An I2C temperature sensor to get the ambient temperature and an I2c 
+jhd1313m1 LCD display to display the temperature values.connected via the shield to the sensors.
 
 The I2C and GPIO line to be used is specified in the strings.xml file (src/res/values directory).
 
