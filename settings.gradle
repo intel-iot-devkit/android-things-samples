@@ -15,6 +15,7 @@
  */
 
 include ':accel_on_lcd'
+include ':mhz16'
 include ':multisensor'
 include ':ads1015'
 include ':ssd1351'
