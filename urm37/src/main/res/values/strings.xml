@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">URM37</string>
+
+    <string name="UART_Edison_Arduino">UART1</string>
+    <string name="UART_Edison_Sparkfun">UART1</string>
+    <string name="UART_Joule_Tuchuck">UART0</string>
+
+    <string name="Reset_Edison_Arduino">IO0</string>
+    <string name="Reset_Edison_Sparkfun">GP20</string>
+    <string name="Reset_Joule_Tuchuck">J7_68</string>
+</resources>
