@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="zombie-detector-project"
+        version="1.0.0">
+
+  <name>ZombieDetector</name>
+  <description>Zombie Detector Project</description>
+  <license>Apache 2.0</license>
+  <keywords>cordova,zombie,detector</keywords>
+  <repo>https://github.com/odwdinc/zombie-detector-project</repo>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <platform name="android">
+    <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+      <intent-filter>
+          <action android:name="android.intent.action.MAIN" />
+          <category android:name="android.intent.category.IOT_LAUNCHER" />
+          <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </config-file>
+    <edit-config file="AndroidManifest.xml" target="/manifest/application/activity" mode="merge">
+      <activity android:screenOrientation="reversePortrait" android:name="ZombieActivity"/>
+    </edit-config>
+    
+    <source-file src="src/android/com/intel/zombiedetector/ZombieActivity.java" target-dir="src/com/intel/zombiedetector/"/>
+  </platform>
+
+</plugin>
