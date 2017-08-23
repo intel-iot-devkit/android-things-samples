@@ -1,0 +1,17 @@
+{
+  "name": "zombie-detector-project",
+  "version": "1.0.0",
+  "description": "Zombie detector project",
+  "cordova": {
+    "id": "zombie-detector-project",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/odwdinc/zombie-detector-project"
+  },
+  "author": "Apache Software Foundation",
+  "license": "Apache-2.0"
+}

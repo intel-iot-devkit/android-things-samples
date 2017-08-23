@@ -2,10 +2,12 @@
   "name": "ATTensorflow",
   "version": "1.0.0",
   "description": "Create an Tensorflow Classifier Node.js",
-  "os": [
-    "win32",
-    "android"
-  ],
+  "cordova": {
+    "id": "com.example.ATTensorflow",
+    "platforms": [
+      "android"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/odwdinc/cordova.plugin.ATTensorflow.git"

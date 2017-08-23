@@ -2,10 +2,12 @@
   "name": "ATCamara",
   "version": "1.0.0",
   "description": "Create an Camara Node.js",
-  "os": [
-    "win32",
-    "android"
-  ],
+  "cordova": {
+    "id": "com.example.ATCamara",
+    "platforms": [
+      "android"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/odwdinc/cordova.plugin.ATCamara.git"
